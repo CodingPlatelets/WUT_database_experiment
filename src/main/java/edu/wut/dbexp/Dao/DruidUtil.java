@@ -1,31 +1,37 @@
 package edu.wut.dbexp.Dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class DruidUtil {
+    @Autowired
+    DruidDataSource dataSource;
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
-    public Connection getConnecttion() throws SQLException {
-        DruidDataSource dataSource=new DruidDataSource();
+
+    public Connection getConnecttion() {
         try {
-            conn=dataSource.getConnection();
+            conn = dataSource.getConnection();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return conn;
     }
+
     public int executeUpdate(String preparedSql, Object[] param) {
         int num = 0;
         try {
             this.pstmt = this.conn.prepareStatement(preparedSql);
             if (param != null) {
-                for(int i = 1; i <= param.length; ++i) {
+                for (int i = 1; i <= param.length; ++i) {
                     this.pstmt.setObject(i, param[i - 1]);
                 }
             }
@@ -40,7 +46,7 @@ public class DruidUtil {
         try {
             this.pstmt = this.conn.prepareStatement(preparedSql);
             if (param != null) {
-                for(int i = 1; i <= param.length; ++i) {
+                for (int i = 1; i <= param.length; ++i) {
                     this.pstmt.setObject(i, param[i - 1]);
                 }
             }
@@ -50,6 +56,7 @@ public class DruidUtil {
         }
         return this.rs;
     }
+
     public void closeAll() {
         if (this.conn != null) {
             try {
