@@ -1,0 +1,28 @@
+openProject:
+  cmd: cmd /c start
+  isOpen: true
+  web:
+    openUrl: http://localhost:${server.port}/swagger-ui.html
+server:
+  port: 8091
+  servlet:
+    session:
+      timeout: 1800
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: dbexp
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/dbexp?useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT
+    username: root
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+springdoc:
+  api-docs:
+    enabled: true
+  show-actuator: true
