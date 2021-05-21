@@ -1,9 +1,9 @@
 package edu.wut.dbexp.Dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +11,10 @@ import java.sql.SQLException;
 
 @Component
 public class DruidUtil {
-    @Autowired
+
+    @Resource
     DruidDataSource dataSource;
+
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -29,13 +31,13 @@ public class DruidUtil {
     public int executeUpdate(String preparedSql, Object[] param) {
         int num = 0;
         try {
-            this.pstmt = this.conn.prepareStatement(preparedSql);
+            pstmt = conn.prepareStatement(preparedSql);
             if (param != null) {
                 for (int i = 1; i <= param.length; ++i) {
-                    this.pstmt.setObject(i, param[i - 1]);
+                    pstmt.setObject(i, param[i - 1]);
                 }
             }
-            num = this.pstmt.executeUpdate();
+            num = pstmt.executeUpdate();
         } catch (SQLException var5) {
             var5.printStackTrace();
         }
@@ -44,13 +46,13 @@ public class DruidUtil {
 
     public ResultSet executeQuery(String preparedSql, Object[] param) {
         try {
-            this.pstmt = this.conn.prepareStatement(preparedSql);
+            pstmt = conn.prepareStatement(preparedSql);
             if (param != null) {
                 for (int i = 1; i <= param.length; ++i) {
-                    this.pstmt.setObject(i, param[i - 1]);
+                    pstmt.setObject(i, param[i - 1]);
                 }
             }
-            this.rs = this.pstmt.executeQuery();
+            rs = pstmt.executeQuery();
         } catch (SQLException var4) {
             var4.printStackTrace();
         }
@@ -58,25 +60,25 @@ public class DruidUtil {
     }
 
     public void closeAll() {
-        if (this.conn != null) {
+        if (conn != null) {
             try {
-                this.conn.close();
+                conn.close();
             } catch (SQLException var4) {
                 var4.printStackTrace();
             }
         }
 
-        if (this.pstmt != null) {
+        if (pstmt != null) {
             try {
-                this.pstmt.close();
+                pstmt.close();
             } catch (SQLException var3) {
                 var3.printStackTrace();
             }
         }
 
-        if (this.rs != null) {
+        if (rs != null) {
             try {
-                this.rs.close();
+                rs.close();
             } catch (SQLException var2) {
                 var2.printStackTrace();
             }

@@ -5,8 +5,8 @@ import edu.wut.dbexp.DataObject.Goods;
 import java.util.List;
 
 /**
- * @author wenka
- * @date 2021/5/219:09
+ * @author wenkan
+ * @date 2021/5/21 9:09
  */
 public interface GoodsService {
     boolean addGoods(Goods goods);

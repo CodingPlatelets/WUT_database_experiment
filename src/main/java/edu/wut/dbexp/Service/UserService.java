@@ -3,8 +3,8 @@ package edu.wut.dbexp.Service;
 import edu.wut.dbexp.DataObject.User;
 
 /**
- * @author wenka
- * @date 2021/5/219:08
+ * @author wenkan
+ * @date 2021/5/21 9:08
  */
 public interface UserService {
      boolean addUser(User user);

@@ -1,12 +1,18 @@
 package edu.wut.dbexp.Config;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import javax.sql.DataSource;
 
 /**
- * @author wenka
- * @date 2021/5/2110:06
+ * @author wenkan
+ * @date 2021/5/21 10:06
  */
 @Configuration
 public class RunConfig implements CommandLineRunner {
@@ -32,6 +38,12 @@ public class RunConfig implements CommandLineRunner {
                 System.out.println("启动项目自动打开浏览器失败");
             }
         }
+    }
+    @Primary
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid")
+    public DataSource dataSourceOne(){
+        return DruidDataSourceBuilder.create().build();
     }
 }
 

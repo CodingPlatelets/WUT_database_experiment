@@ -14,10 +14,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: dbexp
-    password: root
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/dbexp?useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/dbexp?useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT
     username: root
+    password: root
+    druid:
+      max-active: 50
   servlet:
     multipart:
       max-file-size: 50MB
