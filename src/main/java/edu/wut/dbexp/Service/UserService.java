@@ -1,5 +1,7 @@
 package edu.wut.dbexp.Service;
 
+import edu.wut.dbexp.DataObject.User;
+
 /**
  * @author wenka
  * @date 2021/5/219:08

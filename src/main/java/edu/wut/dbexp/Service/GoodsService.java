@@ -1,5 +1,9 @@
 package edu.wut.dbexp.Service;
 
+import edu.wut.dbexp.DataObject.Goods;
+
+import java.util.List;
+
 /**
  * @author wenka
  * @date 2021/5/219:09
