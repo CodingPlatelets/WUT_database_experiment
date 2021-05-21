@@ -15,6 +15,8 @@ public class User {
     private String phoneNumber;
     private int gender;
 
+    public User() {
+    }
 
     @Override
     public String toString() {

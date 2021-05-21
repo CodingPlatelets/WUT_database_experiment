@@ -8,17 +8,37 @@ import java.util.Date;
  */
 public class Goods {
     private Integer goodAttributes;
-    private String id;
+    private String goodsId;
     private Integer stock;
     private String description;
-    private Date inStockDate;
+    private Boolean saleStatus;
+    private Date saleDate;
+    private Boolean isReturnAvailable;
 
-    public Goods(Integer goodAttributes, String id, Integer stock, String description, Date inStockDate) {
+    public Goods(Integer goodAttributes, String goodsId, Integer stock, String description, Boolean saleStatus, Date saleDate, Boolean isReturnAvailable) {
         this.goodAttributes = goodAttributes;
-        this.id = id;
+        this.goodsId = goodsId;
         this.stock = stock;
         this.description = description;
-        this.inStockDate = inStockDate;
+        this.saleStatus = saleStatus;
+        this.saleDate = saleDate;
+        this.isReturnAvailable = isReturnAvailable;
+    }
+
+    public Goods() {
+    }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "goodAttributes=" + goodAttributes +
+                ", goodsId='" + goodsId + '\'' +
+                ", stock=" + stock +
+                ", description='" + description + '\'' +
+                ", saleStatus=" + saleStatus +
+                ", saleDate=" + saleDate +
+                ", isReturnAvailable=" + isReturnAvailable +
+                '}';
     }
 
     public Integer getGoodAttributes() {
@@ -29,12 +49,12 @@ public class Goods {
         this.goodAttributes = goodAttributes;
     }
 
-    public String getId() {
-        return id;
+    public String getGoodsId() {
+        return goodsId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
     }
 
     public Integer getStock() {
@@ -53,12 +73,28 @@ public class Goods {
         this.description = description;
     }
 
-    public Date getInStockDate() {
-        return inStockDate;
+    public Boolean getSaleStatus() {
+        return saleStatus;
     }
 
-    public void setInStockDate(Date inStockDate) {
-        this.inStockDate = inStockDate;
+    public void setSaleStatus(Boolean saleStatus) {
+        this.saleStatus = saleStatus;
+    }
+
+    public Date getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(Date saleDate) {
+        this.saleDate = saleDate;
+    }
+
+    public Boolean getReturnAvailable() {
+        return isReturnAvailable;
+    }
+
+    public void setReturnAvailable(Boolean returnAvailable) {
+        isReturnAvailable = returnAvailable;
     }
 }
 

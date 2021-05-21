@@ -1,6 +1,7 @@
 package edu.wut.dbexp.Dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -12,8 +13,13 @@ import java.sql.SQLException;
 @Component
 public class DruidUtil {
 
-    @Resource
-    DruidDataSource dataSource;
+
+    private DruidDataSource dataSource;
+
+    @Autowired
+    public DruidUtil(DruidDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     Connection conn = null;
     PreparedStatement pstmt = null;

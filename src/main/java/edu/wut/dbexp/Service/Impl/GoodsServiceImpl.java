@@ -1,6 +1,7 @@
 package edu.wut.dbexp.Service.Impl;
 
 
+import com.alibaba.druid.sql.visitor.functions.If;
 import edu.wut.dbexp.Dao.DruidUtil;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Goods;
@@ -17,10 +18,15 @@ import java.util.List;
 /**
  * @author lxx
  */
-@Service
+@Service("UserService")
 public class GoodsServiceImpl implements GoodsService {
-    @Autowired
+
     GoodsDao goodsDao;
+
+    @Autowired
+    public GoodsServiceImpl(GoodsDao goodsDao) {
+        this.goodsDao = goodsDao;
+    }
 
     @Override
     public boolean addGoods(Goods goods) {
@@ -39,7 +45,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Goods searchGoods(String id) {
-        return null;
+        return goodsDao.searchGoods(id);
     }
 
     @Override

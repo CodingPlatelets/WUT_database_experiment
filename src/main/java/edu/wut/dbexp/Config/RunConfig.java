@@ -1,5 +1,6 @@
 package edu.wut.dbexp.Config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -42,7 +43,7 @@ public class RunConfig implements CommandLineRunner {
     @Primary
     @Bean
     @ConfigurationProperties("spring.datasource.druid")
-    public DataSource dataSourceOne(){
+    public DruidDataSource dataSource(){
         return DruidDataSourceBuilder.create().build();
     }
 }

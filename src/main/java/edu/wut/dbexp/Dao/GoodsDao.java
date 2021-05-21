@@ -32,10 +32,10 @@ public interface GoodsDao {
 
     /**
      *This is a method for querying goods
-     * @param id 商品独一无二的Id
+     * @param goodsId 商品独一无二的Id
      * @return 根据Id搜索到的货物
      */
-    Goods searchGoods(String id);
+    Goods searchGoods(String goodsId);
 
     /**
      * This is a method for getting all goods

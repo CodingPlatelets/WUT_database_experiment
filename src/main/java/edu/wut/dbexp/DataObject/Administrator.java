@@ -39,6 +39,9 @@ public class Administrator {
         this.phoneNumber = phoneNumber;
     }
 
+    public Administrator() {
+    }
+
     @Override
     public String toString() {
         return "管理员{" +
