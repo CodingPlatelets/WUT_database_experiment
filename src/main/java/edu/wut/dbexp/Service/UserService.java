@@ -14,4 +14,6 @@ public interface UserService {
      boolean existUser(User user);
 
      boolean deleteUser(User user);
+
+     boolean login(String  userName,String userPwd);
 }

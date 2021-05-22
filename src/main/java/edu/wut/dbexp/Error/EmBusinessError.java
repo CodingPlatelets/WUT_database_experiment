@@ -9,7 +9,7 @@ public enum EmBusinessError implements CommonError
     UNKNOWN_ERROR("00000","unknown_error"),
 
     PARAMETER_VALIDATION_ERROR("00001","invalid_param"),
-
+    LOGIN_FAILED("50001","password is wrong"),
 
     USER_NOT_EXIST("10001","user_not_exist"),
     INVALID_MAIL("10002","invalid_mail"),

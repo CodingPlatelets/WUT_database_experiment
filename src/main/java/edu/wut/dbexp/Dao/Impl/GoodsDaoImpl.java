@@ -1,23 +1,15 @@
 package edu.wut.dbexp.Dao.Impl;
 
-import edu.wut.dbexp.Dao.DruidUtil;
+import edu.wut.dbexp.Utils.DruidUtil;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Goods;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wenkan

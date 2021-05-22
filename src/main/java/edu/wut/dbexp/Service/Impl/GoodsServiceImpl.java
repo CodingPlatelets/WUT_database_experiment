@@ -1,18 +1,12 @@
 package edu.wut.dbexp.Service.Impl;
 
 
-import com.alibaba.druid.sql.visitor.functions.If;
-import edu.wut.dbexp.Dao.DruidUtil;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Goods;
 import edu.wut.dbexp.Service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

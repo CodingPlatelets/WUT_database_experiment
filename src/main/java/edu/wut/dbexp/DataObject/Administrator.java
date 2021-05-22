@@ -8,12 +8,7 @@ public class Administrator {
     private String userName;
     private Integer id;
     private String phoneNumber;
-
-    public Administrator(String userName, Integer id, String phoneNumber) {
-        this.userName = userName;
-        this.id = id;
-        this.phoneNumber = phoneNumber;
-    }
+    private String userPwd;
 
     public String getUserName() {
         return userName;
@@ -39,16 +34,22 @@ public class Administrator {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getUserPwd() {
+        return userPwd;
+    }
+
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
+    }
+
     public Administrator() {
     }
 
-    @Override
-    public String toString() {
-        return "管理员{" +
-                "userName='" + userName + '\'' +
-                ", id=" + id +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+    public Administrator(String userName, Integer id, String phoneNumber, String userPwd) {
+        this.userName = userName;
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.userPwd = userPwd;
     }
 }
 
