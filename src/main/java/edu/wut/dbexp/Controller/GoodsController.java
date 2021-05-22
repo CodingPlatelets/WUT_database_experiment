@@ -2,8 +2,10 @@ package edu.wut.dbexp.Controller;
 
 import com.alibaba.fastjson.JSON;
 import edu.wut.dbexp.DataObject.Goods;
+import edu.wut.dbexp.Error.EmBusinessError;
 import edu.wut.dbexp.Reponse.CommonReturnType;
 import edu.wut.dbexp.Service.GoodsService;
+import edu.wut.dbexp.Utils.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,48 @@ public class GoodsController {
 
     /**
      * 查询某个商品
+     *
      * @return
      */
     @PostMapping("/query/one")
-    public CommonReturnType test(@RequestParam("goodsId")String goodsId){
+    public CommonReturnType queryForOneGood(@RequestParam("goodsId") String goodsId) {
         Goods goods = goodsService.searchGoods(goodsId);
-        return  CommonReturnType.create(JSON.toJSONString(goods),"success");
+        return CommonReturnType.create(JSON.toJSONString(goods), "success");
+    }
+
+    @GetMapping("/query/all")
+    public CommonReturnType queryForAllGoods() {
+        if (goodsService.getAllGoods() != null) {
+            return CommonReturnType.create(JSON.toJSONString(goodsService.getAllGoods()), "success");
+        } else {
+            return CommonReturnType.create(EmBusinessError.UNKNOWN_ERROR, "unKnownError");
+        }
+    }
+
+    @PostMapping("/query/stock")
+    public CommonReturnType queryByStock(@RequestParam("numbers") int num) {
+        if (goodsService.selectedByStock(num) != null) {
+            return CommonReturnType.create(JSON.toJSONString(goodsService.selectedByStock(num)), "success");
+        } else {
+            return CommonReturnType.create(EmBusinessError.UNKNOWN_ERROR, "unKnownError");
+        }
+    }
+
+    @PostMapping("/add/goods")
+    public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
+                                    @RequestParam("stock") Integer stock,
+                                    @RequestParam("description") String description){
+        Goods goods = new Goods();
+        goods.setGoodAttributes(goodAttributes);
+        goods.setDescription(description);
+        goods.setStock(stock);
+        goods.setGoodsId(IdUtils.getPrimaryKey());
+        if(goodsService.addGoods(goods)){
+            return CommonReturnType.create(goods.getGoodsId(),"success");
+        }else {
+            return CommonReturnType.create(EmBusinessError.LACK_INFO,"check your data");
+        }
+
     }
 }
 

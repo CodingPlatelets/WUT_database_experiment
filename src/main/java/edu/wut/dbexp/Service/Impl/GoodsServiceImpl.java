@@ -30,7 +30,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public boolean addGoods(Goods goods) {
-        return false;
+        return goodsDao.addGoods(goods);
     }
 
     @Override
@@ -50,11 +50,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods> getAllGoods() {
-        return null;
+        return goodsDao.getAllGoods();
     }
 
     @Override
     public List<Goods> selectedByStock(int num) {
-        return null;
+        return goodsDao.selectedByStock(num);
     }
 }
