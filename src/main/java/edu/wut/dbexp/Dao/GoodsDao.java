@@ -25,10 +25,10 @@ public interface GoodsDao {
 
     /**
      *This is a method for deleting goods
-     * @param goods 商品
+     * @param goodsId 商品编号
      * @return 删除是否成功
      */
-    boolean deleteGoods(Goods goods);
+    boolean deleteGoods(String goodsId);
 
     /**
      *This is a method for querying goods
@@ -46,7 +46,7 @@ public interface GoodsDao {
 
     /**
      *This is a method for getting goods whose stock is less than num
-     * @param num
+     * @param num 货物数量
      * @return 仓库中少于num件的货物信息
      */
     List<Goods> selectedByStock(int num);

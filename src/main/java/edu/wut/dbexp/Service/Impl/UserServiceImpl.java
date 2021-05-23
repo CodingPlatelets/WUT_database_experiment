@@ -22,32 +22,34 @@ public class UserServiceImpl implements UserService {
         this.administratorDao = administratorDao;
     }
 
-
-
-
     @Override
     public boolean addUser(User user) {
-        return false;
+        return userDao.addUser(user);
     }
 
     @Override
     public boolean updateUser(User user) {
-        return false;
+        return userDao.updateUser(user);
     }
 
     @Override
-    public boolean existUser(User user) {
-        return false;
+    public boolean existUser(String id) {
+        return userDao.existUser(id);
     }
 
     @Override
-    public boolean deleteUser(User user) {
-        return false;
+    public boolean deleteUser(String id) {
+        return userDao.deleteUser(id);
     }
 
     @Override
     public boolean login(String userName, String userPwd) {
         return administratorDao.selectByUserName(userName,userPwd);
+    }
+
+    @Override
+    public User searchUser(String id) {
+        return userDao.searchUser(id);
     }
 }
 

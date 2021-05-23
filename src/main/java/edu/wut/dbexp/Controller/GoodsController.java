@@ -29,7 +29,7 @@ public class GoodsController {
     /**
      * 查询某个商品
      *
-     * @return
+     * @return 返回某个商品信息
      */
     @PostMapping("/query/one")
     public CommonReturnType queryForOneGood(@RequestParam("goodsId") String goodsId) {
@@ -71,5 +71,16 @@ public class GoodsController {
         }
 
     }
+
+    /*@PostMapping("/update/stock")
+    public CommonReturnType updateStock(@RequestParam("goodAttributes") String goodAtteibutes,
+                                        @RequestParam("stock") int stock){
+        Goods goods=goodsService.searchGoods();
+        goods.setStock(stock);
+        if (goodsService.updateGoods(goods)){
+            return CommonReturnType.create(null,"update stock success");
+        }
+
+    }*/
 }
 

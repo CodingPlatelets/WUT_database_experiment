@@ -18,12 +18,10 @@ import java.util.List;
 @Repository("GoodsDao")
 public class GoodsDaoImpl implements GoodsDao {
 
-    private DruidUtil druidUtil;
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GoodsDaoImpl(DruidUtil druidUtil, JdbcTemplate jdbcTemplate) {
-        this.druidUtil = druidUtil;
+    public GoodsDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -44,12 +42,28 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGoods(Goods goods) {
-        return false;
+        String sql="insert into goods values(?,?,?,?,?)";
+        try {
+            return jdbcTemplate.update(sql, goods.getGoodAttributes(),
+                    goods.getGoodsId(),
+                    goods.getStock(),
+                    goods.getDescription(),
+                    goods.getSaleStatus(),
+                    goods.getSaleDate(),
+                    goods.getReturnAvailable()) > 0;
+        } catch (DataAccessException e){
+            return false;
+        }
     }
 
     @Override
-    public boolean deleteGoods(Goods goods) {
-        return false;
+    public boolean deleteGoods(String goodsId) {
+        String sql="delete from goods where goodsId=?";
+        try {
+            return jdbcTemplate.update(sql, goodsId) > 0;
+        }catch (DataAccessException e){
+            return false;
+        }
     }
 
     @Override

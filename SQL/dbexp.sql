@@ -58,3 +58,23 @@ INSERT INTO `goods` VALUES (1, '2', 2, '456', '2021-05-22', 0, 0);
 INSERT INTO `goods` VALUES (2, '4815698760', 123, '这是我的衣服', NULL, 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+                          `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                          `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+                          `vipStatus` int NULL DEFAULT 0,
+                          `balance` double NOT NULL DEFAULT 0,
+                          `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+                          `gender` int NULL DEFAULT 0,
+                          PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+INSERT INTO `user` VALUES('1','hwk最帅',1,1000.0,'11111111',1);
+INSERT INTO `user` VALUES('2','zc最帅',5,1000.0,'110',0);
+INSERT INTO `user` VALUES('100','yr最帅',5,0,'110000000000',0);
+

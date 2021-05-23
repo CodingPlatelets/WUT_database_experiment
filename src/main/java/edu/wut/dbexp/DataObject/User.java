@@ -27,11 +27,8 @@ public class User {
                 ", balance=" + balance +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", gender=" + gender +
-                ", creatDate=" + creatDate +
                 '}';
     }
-
-    private Date creatDate;
 
     public String getId() {
         return id;
@@ -63,14 +60,6 @@ public class User {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public Date getCreatDate() {
-        return creatDate;
-    }
-
-    public void setCreatDate(Date creatDate) {
-        this.creatDate = creatDate;
     }
 
     public String getPhoneNumber() { return phoneNumber; }
