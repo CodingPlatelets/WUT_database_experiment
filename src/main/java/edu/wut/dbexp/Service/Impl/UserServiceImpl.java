@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private UserDao userDao;
-    private AdministratorDao administratorDao;
+    private final UserDao userDao;
+    private final AdministratorDao administratorDao;
 
     @Autowired
     public UserServiceImpl(UserDao userDao, AdministratorDao administratorDao) {
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(String userName, String userPwd) {
-        return administratorDao.selectByUserName(userName,userPwd);
+        return administratorDao.selectByUserName(userName, userPwd);
     }
 
     @Override

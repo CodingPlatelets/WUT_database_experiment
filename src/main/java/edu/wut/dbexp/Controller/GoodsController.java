@@ -58,16 +58,16 @@ public class GoodsController {
     @PostMapping("/add/goods")
     public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
                                     @RequestParam("stock") Integer stock,
-                                    @RequestParam("description") String description){
+                                    @RequestParam("description") String description) {
         Goods goods = new Goods();
         goods.setGoodAttributes(goodAttributes);
         goods.setDescription(description);
         goods.setStock(stock);
         goods.setGoodsId(IdUtils.getPrimaryKey());
-        if(goodsService.addGoods(goods)){
-            return CommonReturnType.create(goods.getGoodsId(),"success");
-        }else {
-            return CommonReturnType.create(EmBusinessError.LACK_INFO,"check your data");
+        if (goodsService.addGoods(goods)) {
+            return CommonReturnType.create(goods.getGoodsId(), "success");
+        } else {
+            return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your data");
         }
 
     }

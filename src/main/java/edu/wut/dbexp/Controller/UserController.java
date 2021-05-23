@@ -41,10 +41,10 @@ public class UserController {
     @PostMapping("/login")
     public CommonReturnType login(@RequestParam("userName") String userName,
                                   @RequestParam("userPwd") String Pwd) {
-        if (userService.login(userName,Pwd)){
-            return CommonReturnType.create(userName,"success");
-        }else {
-            return CommonReturnType.create(EmBusinessError.LOGIN_FAILED,"pwd is wrong or user is not exit");
+        if (userService.login(userName, Pwd)) {
+            return CommonReturnType.create(userName, "success");
+        } else {
+            return CommonReturnType.create(EmBusinessError.LOGIN_FAILED, "pwd is wrong or user is not exit");
         }
     }
 
@@ -54,81 +54,81 @@ public class UserController {
                                     @RequestParam("balance") BigDecimal balance,
                                     @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("gender") int gender
-                                    ){
-        User user=new User();
+    ) {
+        User user = new User();
         user.setId(IdUtils.getPrimaryKey());
         user.setUserName(username);
         user.setVipStatus(vipStatus);
         user.setBalance(balance);
         user.setPhoneNumber(phoneNumber);
         user.setGender(gender);
-        if(userService.addUser(user)) {
+        if (userService.addUser(user)) {
             return CommonReturnType.create(JSON.toJSON(user));
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"check your information!");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your information!");
     }
 
     @PostMapping("/update/userName")
     public CommonReturnType upadateUsername(@RequestParam("id") String id,
-                                           @RequestParam("userName") String userName){
-        User user=userService.searchUser(id);
+                                            @RequestParam("userName") String userName) {
+        User user = userService.searchUser(id);
         user.setUserName(userName);
-        if (userService.updateUser(user)){
-            return CommonReturnType.create(null,"update username success");
+        if (userService.updateUser(user)) {
+            return CommonReturnType.create(null, "update username success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
 
     @PostMapping("/update/vipStatus")
     public CommonReturnType upadateVipstatus(@RequestParam("id") String id,
-                                             @RequestParam("vipStatus") int vipStatus){
-        User user=userService.searchUser(id);
+                                             @RequestParam("vipStatus") int vipStatus) {
+        User user = userService.searchUser(id);
         user.setVipStatus(vipStatus);
-        if (userService.updateUser(user)){
-            return CommonReturnType.create(null,"update vipStatus success");
+        if (userService.updateUser(user)) {
+            return CommonReturnType.create(null, "update vipStatus success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
 
     @PostMapping("/update/balance")
     public CommonReturnType upadateBalance(@RequestParam("id") String id,
-                                           @RequestParam("balance") BigDecimal balance){
-        User user=userService.searchUser(id);
+                                           @RequestParam("balance") BigDecimal balance) {
+        User user = userService.searchUser(id);
         user.setBalance(balance);
-        if (userService.updateUser(user)){
-            return CommonReturnType.create(null,"update balance success");
+        if (userService.updateUser(user)) {
+            return CommonReturnType.create(null, "update balance success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
 
     @PostMapping("/update/phoneNumber")
     public CommonReturnType upadatePhoneNumber(@RequestParam("id") String id,
-                                             @RequestParam("phoneNumber") String phoneNumber){
-        User user=userService.searchUser(id);
+                                               @RequestParam("phoneNumber") String phoneNumber) {
+        User user = userService.searchUser(id);
         user.setPhoneNumber(phoneNumber);
-        if (userService.updateUser(user)){
-            return CommonReturnType.create(null,"update phoneNumber success");
+        if (userService.updateUser(user)) {
+            return CommonReturnType.create(null, "update phoneNumber success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
 
     @PostMapping("/update/gender")
     public CommonReturnType upadateGender(@RequestParam("id") String id,
-                                          @RequestParam("gender") int gender){
-        User user=userService.searchUser(id);
+                                          @RequestParam("gender") int gender) {
+        User user = userService.searchUser(id);
         user.setGender(gender);
-        if (userService.updateUser(user)){
-            return CommonReturnType.create(null,"update gender success");
+        if (userService.updateUser(user)) {
+            return CommonReturnType.create(null, "update gender success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
 
     @PostMapping("/delete")
-    public CommonReturnType deleteUser(@RequestParam("id") String id){
-        if(userService.deleteUser(id)){
-            return CommonReturnType.create(null,"delete success");
+    public CommonReturnType deleteUser(@RequestParam("id") String id) {
+        if (userService.deleteUser(id)) {
+            return CommonReturnType.create(null, "delete success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"delete failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "delete failed");
     }
 
 }

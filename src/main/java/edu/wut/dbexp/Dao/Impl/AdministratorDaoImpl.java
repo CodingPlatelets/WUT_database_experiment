@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("AdministratorDao")
 public class AdministratorDaoImpl implements AdministratorDao {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public AdministratorDaoImpl(JdbcTemplate jdbcTemplate) {

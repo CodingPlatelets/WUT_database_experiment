@@ -18,7 +18,7 @@ import java.util.List;
 @Repository("GoodsDao")
 public class GoodsDaoImpl implements GoodsDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public GoodsDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -42,7 +42,7 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGoods(Goods goods) {
-        String sql="insert into goods values(?,?,?,?,?)";
+        String sql = "insert into goods values(?,?,?,?,?)";
         try {
             return jdbcTemplate.update(sql, goods.getGoodAttributes(),
                     goods.getGoodsId(),
@@ -51,17 +51,17 @@ public class GoodsDaoImpl implements GoodsDao {
                     goods.getSaleStatus(),
                     goods.getSaleDate(),
                     goods.getReturnAvailable()) > 0;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             return false;
         }
     }
 
     @Override
     public boolean deleteGoods(String goodsId) {
-        String sql="delete from goods where goodsId=?";
+        String sql = "delete from goods where goodsId=?";
         try {
             return jdbcTemplate.update(sql, goodsId) > 0;
-        }catch (DataAccessException e){
+        } catch (DataAccessException e) {
             return false;
         }
     }
@@ -92,7 +92,7 @@ public class GoodsDaoImpl implements GoodsDao {
     public List<Goods> selectedByStock(int num) {
         try {
             return jdbcTemplate.query(
-                    "select * from goods where stock< ?", new BeanPropertyRowMapper<>(Goods.class),num);
+                    "select * from goods where stock< ?", new BeanPropertyRowMapper<>(Goods.class), num);
         } catch (DataAccessException dataAccessException) {
             return null;
         }
