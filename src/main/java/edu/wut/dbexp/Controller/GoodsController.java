@@ -78,7 +78,7 @@ public class GoodsController {
 
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/update")
-    public CommonReturnType updateStock(@RequestParam("goodAttributes") Integer goodAttributes,
+    public CommonReturnType updateGoods(@RequestParam("goodAttributes") Integer goodAttributes,
                                         @RequestParam("goodsId") String goodsId,
                                         @RequestParam("stock") int stock,
                                         @RequestParam("description") String description,
