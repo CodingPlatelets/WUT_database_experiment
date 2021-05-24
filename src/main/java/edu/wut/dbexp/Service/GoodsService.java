@@ -9,11 +9,11 @@ import java.util.List;
  * @date 2021/5/21 9:09
  */
 public interface GoodsService {
-    boolean addGoods(Goods goods);
+    boolean addGoods(Goods goods) throws Exception;
 
-    boolean updateGoods(Goods goods);
+    boolean updateGoods(Goods goods) throws Exception;
 
-    boolean deleteGoods(Goods goods);
+    boolean deleteGoods(Goods goods) throws Exception;
 
     Goods searchGoods(String id);      //通过货物编号查找相应货物信息并返回
 

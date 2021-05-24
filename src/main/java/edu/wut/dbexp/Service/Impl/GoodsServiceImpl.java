@@ -6,6 +6,7 @@ import edu.wut.dbexp.DataObject.Goods;
 import edu.wut.dbexp.Service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,18 +23,21 @@ public class GoodsServiceImpl implements GoodsService {
         this.goodsDao = goodsDao;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean addGoods(Goods goods) {
+    public boolean addGoods(Goods goods) throws Exception{
         return goodsDao.addGoods(goods);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean updateGoods(Goods goods) {
+    public boolean updateGoods(Goods goods) throws Exception {
         return false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteGoods(Goods goods) {
+    public boolean deleteGoods(Goods goods) throws Exception{
         return false;
     }
 

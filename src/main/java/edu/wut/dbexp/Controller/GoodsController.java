@@ -7,12 +7,13 @@ import edu.wut.dbexp.Reponse.CommonReturnType;
 import edu.wut.dbexp.Service.GoodsService;
 import edu.wut.dbexp.Utils.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author wenka
+ * @author wenkan
  * @use 商品操作逻辑
- * @date 2021/5/219:07
+ * @date 2021/5/21 9:07
  */
 @RestController
 @RequestMapping(value = "dbexp/goods")
@@ -55,10 +56,11 @@ public class GoodsController {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @PostMapping("/add/goods")
     public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
                                     @RequestParam("stock") Integer stock,
-                                    @RequestParam("description") String description) {
+                                    @RequestParam("description") String description) throws Exception {
         Goods goods = new Goods();
         goods.setGoodAttributes(goodAttributes);
         goods.setDescription(description);

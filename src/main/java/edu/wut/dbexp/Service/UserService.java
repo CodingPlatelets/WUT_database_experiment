@@ -12,14 +12,14 @@ public interface UserService {
      * @param user 添加的用户信息
      * @return 是否添加成功
      */
-    boolean addUser(User user);
+    boolean addUser(User user) throws Exception;
 
     /***
      * 更新用户信息
      * @param user 更新的用户信息
      * @return 是否更新成功
      */
-    boolean updateUser(User user);
+    boolean updateUser(User user) throws Exception;
 
     /***
      * 用户是否存在

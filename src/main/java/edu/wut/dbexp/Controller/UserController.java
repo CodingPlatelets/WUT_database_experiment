@@ -38,7 +38,7 @@ public class UserController {
         return "<h1>success" + test + "</h1>";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/Adb/login")
     public CommonReturnType login(@RequestParam("userName") String userName,
                                   @RequestParam("userPwd") String Pwd) {
         if (userService.login(userName, Pwd)) {
@@ -54,7 +54,7 @@ public class UserController {
                                     @RequestParam("balance") BigDecimal balance,
                                     @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("gender") int gender
-    ) {
+    ) throws Exception {
         User user = new User();
         user.setId(IdUtils.getPrimaryKey());
         user.setUserName(username);
@@ -70,7 +70,7 @@ public class UserController {
 
     @PostMapping("/update/userName")
     public CommonReturnType upadateUsername(@RequestParam("id") String id,
-                                            @RequestParam("userName") String userName) {
+                                            @RequestParam("userName") String userName) throws Exception {
         User user = userService.searchUser(id);
         user.setUserName(userName);
         if (userService.updateUser(user)) {
@@ -81,7 +81,7 @@ public class UserController {
 
     @PostMapping("/update/vipStatus")
     public CommonReturnType upadateVipstatus(@RequestParam("id") String id,
-                                             @RequestParam("vipStatus") int vipStatus) {
+                                             @RequestParam("vipStatus") int vipStatus) throws Exception {
         User user = userService.searchUser(id);
         user.setVipStatus(vipStatus);
         if (userService.updateUser(user)) {
@@ -92,7 +92,7 @@ public class UserController {
 
     @PostMapping("/update/balance")
     public CommonReturnType upadateBalance(@RequestParam("id") String id,
-                                           @RequestParam("balance") BigDecimal balance) {
+                                           @RequestParam("balance") BigDecimal balance) throws Exception {
         User user = userService.searchUser(id);
         user.setBalance(balance);
         if (userService.updateUser(user)) {
@@ -103,7 +103,7 @@ public class UserController {
 
     @PostMapping("/update/phoneNumber")
     public CommonReturnType upadatePhoneNumber(@RequestParam("id") String id,
-                                               @RequestParam("phoneNumber") String phoneNumber) {
+                                               @RequestParam("phoneNumber") String phoneNumber) throws Exception {
         User user = userService.searchUser(id);
         user.setPhoneNumber(phoneNumber);
         if (userService.updateUser(user)) {
@@ -114,7 +114,7 @@ public class UserController {
 
     @PostMapping("/update/gender")
     public CommonReturnType upadateGender(@RequestParam("id") String id,
-                                          @RequestParam("gender") int gender) {
+                                          @RequestParam("gender") int gender) throws Exception {
         User user = userService.searchUser(id);
         user.setGender(gender);
         if (userService.updateUser(user)) {

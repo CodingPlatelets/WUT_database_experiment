@@ -6,6 +6,7 @@ import edu.wut.dbexp.DataObject.User;
 import edu.wut.dbexp.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author wenkan
@@ -22,13 +23,15 @@ public class UserServiceImpl implements UserService {
         this.administratorDao = administratorDao;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean addUser(User user) {
+    public boolean addUser(User user) throws Exception{
         return userDao.addUser(user);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean updateUser(User user) {
+    public boolean updateUser(User user) throws Exception{
         return userDao.updateUser(user);
     }
 
