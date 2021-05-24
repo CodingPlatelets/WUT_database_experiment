@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * @author wenkan
  * @use 商品操作逻辑
@@ -74,15 +76,27 @@ public class GoodsController {
 
     }
 
-    /*@PostMapping("/update/stock")
-    public CommonReturnType updateStock(@RequestParam("goodAttributes") String goodAtteibutes,
-                                        @RequestParam("stock") int stock){
-        Goods goods=goodsService.searchGoods();
+    @Transactional(rollbackFor = Exception.class)
+    @PostMapping("/update")
+    public CommonReturnType updateStock(@RequestParam("goodAttributes") Integer goodAttributes,
+                                        @RequestParam("goodsId") String goodsId,
+                                        @RequestParam("stock") int stock,
+                                        @RequestParam("description") String description,
+                                        @RequestParam("saleStatus") Boolean saleStatus,
+                                        @RequestParam("saleDate") Date saleDate,
+                                        @RequestParam("isReturnAvailable") Boolean isReturnAvailable) throws Exception {
+        Goods goods=new Goods();
+        goods.setGoodAttributes(goodAttributes);
+        goods.setGoodsId(goodsId);
         goods.setStock(stock);
+        goods.setDescription(description);
+        goods.setSaleStatus(saleStatus);
+        goods.setSaleDate(saleDate);
+        goods.setReturnAvailable(isReturnAvailable);
         if (goodsService.updateGoods(goods)){
-            return CommonReturnType.create(null,"update stock success");
+            return CommonReturnType.create(null,"update goods success");
         }
-
-    }*/
+        return CommonReturnType.create(EmBusinessError.LACK_INFO,"update goods failed");
+    }
 }
 
