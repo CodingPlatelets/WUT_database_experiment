@@ -25,8 +25,13 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean addGoods(Goods goods) throws Exception{
-        return goodsDao.addGoods(goods);
+    public boolean addGoods(Goods[] goods) throws Exception {
+        for (var good : goods) {
+            if (!goodsDao.addGoods(good)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -37,7 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteGoods(Goods goods) throws Exception{
+    public boolean deleteGoods(Goods goods) throws Exception {
         return false;
     }
 

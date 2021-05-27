@@ -9,7 +9,7 @@ import java.util.List;
  * @date 2021/5/21 9:09
  */
 public interface GoodsService {
-    boolean addGoods(Goods goods) throws Exception;
+    boolean addGoods(Goods[] goods) throws Exception;
 
     boolean updateGoods(Goods goods) throws Exception;
 

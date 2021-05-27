@@ -6,11 +6,14 @@ import edu.wut.dbexp.Error.EmBusinessError;
 import edu.wut.dbexp.Reponse.CommonReturnType;
 import edu.wut.dbexp.Service.GoodsService;
 import edu.wut.dbexp.Utils.IdUtils;
+import edu.wut.dbexp.Utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wenkan
@@ -63,13 +66,18 @@ public class GoodsController {
     public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
                                     @RequestParam("stock") Integer stock,
                                     @RequestParam("description") String description) throws Exception {
-        Goods goods = new Goods();
-        goods.setGoodAttributes(goodAttributes);
-        goods.setDescription(description);
-        goods.setStock(stock);
-        goods.setGoodsId(IdUtils.getPrimaryKey());
-        if (goodsService.addGoods(goods)) {
-            return CommonReturnType.create(goods.getGoodsId(), "success");
+        List<Goods> list = new ArrayList<>();
+        for (int i = 0; i < stock; i++) {
+            Goods goods = new Goods();
+            goods.setGoodAttributes(goodAttributes);
+            goods.setDescription(description);
+            goods.setStock(stock);
+            goods.setGoodsId(IdUtils.getPrimaryKey());
+            list.add(goods);
+        }
+
+        if (goodsService.addGoods((Goods[]) list.toArray())) {
+            return CommonReturnType.create(null, "success");
         } else {
             return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your data");
         }
@@ -79,13 +87,13 @@ public class GoodsController {
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/update")
     public CommonReturnType updateGoods(@RequestParam("goodAttributes") Integer goodAttributes,
-                                        @RequestParam("goodsId") String goodsId,
                                         @RequestParam("stock") int stock,
                                         @RequestParam("description") String description,
                                         @RequestParam("saleStatus") Boolean saleStatus,
                                         @RequestParam("saleDate") Date saleDate,
                                         @RequestParam("isReturnAvailable") Boolean isReturnAvailable) throws Exception {
-        Goods goods=new Goods();
+        String goodsId = IdUtils.getPrimaryKey();
+        Goods goods = new Goods();
         goods.setGoodAttributes(goodAttributes);
         goods.setGoodsId(goodsId);
         goods.setStock(stock);
@@ -93,10 +101,10 @@ public class GoodsController {
         goods.setSaleStatus(saleStatus);
         goods.setSaleDate(saleDate);
         goods.setReturnAvailable(isReturnAvailable);
-        if (goodsService.updateGoods(goods)){
-            return CommonReturnType.create(null,"update goods success");
+        if (goodsService.updateGoods(goods)) {
+            return CommonReturnType.create(null, "update goods success");
         }
-        return CommonReturnType.create(EmBusinessError.LACK_INFO,"update goods failed");
+        return CommonReturnType.create(EmBusinessError.LACK_INFO, "update goods failed");
     }
 }
 
