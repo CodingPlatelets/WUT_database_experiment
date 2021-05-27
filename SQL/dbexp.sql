@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 22/05/2021 15:05:07
+ Date: 27/05/2021 22:09:12
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `administrator`  (
   `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `userPwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1234',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of administrator
@@ -35,46 +35,78 @@ CREATE TABLE `administrator`  (
 INSERT INTO `administrator` VALUES ('Edward', 1, '1818181818', 'root');
 
 -- ----------------------------
+-- Table structure for good
+-- ----------------------------
+DROP TABLE IF EXISTS `good`;
+CREATE TABLE `good`  (
+  `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `goodAttributes` int NOT NULL,
+  `saleDate` datetime NULL DEFAULT NULL,
+  `saleStatus` tinyint(1) NOT NULL DEFAULT 0,
+  `originPrice` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `isSale` tinyint(1) NOT NULL,
+  PRIMARY KEY (`goodId`) USING BTREE,
+  INDEX `goodAttributes`(`goodAttributes`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of good
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for goods
 -- ----------------------------
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods`  (
   `goodAttributes` int NOT NULL,
-  `goodsId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `stock` int NOT NULL DEFAULT 0,
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `saleDate` date NULL DEFAULT NULL,
-  `saleStatus` tinyint(1) NOT NULL DEFAULT 0,
-  `isReturnAvailable` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`goodsId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`goodAttributes`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES (1, '1', 1, '123', '2021-05-21', 0, 0);
-INSERT INTO `goods` VALUES (3, '1619349122', 34, 'lxx最帅了', NULL, 0, 0);
-INSERT INTO `goods` VALUES (1, '2', 2, '456', '2021-05-22', 0, 0);
-INSERT INTO `goods` VALUES (2, '4815698760', 123, '这是我的衣服', NULL, 0, 0);
+INSERT INTO `goods` VALUES (1, NULL, 0);
+INSERT INTO `goods` VALUES (2, NULL, 0);
+INSERT INTO `goods` VALUES (3, NULL, 0);
+INSERT INTO `goods` VALUES (10, NULL, 0);
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Table structure for logger
+-- ----------------------------
+DROP TABLE IF EXISTS `logger`;
+CREATE TABLE `logger`  (
+  `userId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`userId`) USING BTREE,
+  INDEX `goodId`(`goodId`) USING BTREE,
+  CONSTRAINT `logger_ibfk_1` FOREIGN KEY (`goodId`) REFERENCES `good` (`goodId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of logger
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `vipStatus` int NULL DEFAULT 0,
+  `balance` double NOT NULL DEFAULT 0,
+  `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `gender` int NULL DEFAULT 0
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', 'hwk', 2, 10000, '110110110110', 1);
+INSERT INTO `user` VALUES ('100', 'yr最帅', 5, 0, '110000000000', 0);
+INSERT INTO `user` VALUES ('2', 'zc最帅', 5, 1000, '110', 0);
+INSERT INTO `user` VALUES ('3', 'lxx最帅', 5, 10000, '10010010110', 1);
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-                          `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-                          `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-                          `vipStatus` int NULL DEFAULT 0,
-                          `balance` double NOT NULL DEFAULT 0,
-                          `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-                          `gender` int NULL DEFAULT 0,
-                          PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
-INSERT INTO `user` VALUES('1','hwk最帅',1,1000.0,'11111111',1);
-INSERT INTO `user` VALUES('2','zc最帅',5,1000.0,'110',0);
-INSERT INTO `user` VALUES('100','yr最帅',5,0,'110000000000',0);
-
+SET FOREIGN_KEY_CHECKS = 1;
