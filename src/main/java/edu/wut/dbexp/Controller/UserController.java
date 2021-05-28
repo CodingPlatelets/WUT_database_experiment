@@ -63,7 +63,7 @@ public class UserController {
         user.setPhoneNumber(phoneNumber);
         user.setGender(gender);
         if (userService.addUser(user)) {
-            return CommonReturnType.create(JSON.toJSON(user));
+            return CommonReturnType.create(JSON.toJSON(user),"success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your information!");
     }
@@ -74,7 +74,7 @@ public class UserController {
         User user = userService.searchUser(id);
         user.setUserName(userName);
         if (userService.updateUser(user)) {
-            return CommonReturnType.create(null, "update username success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
@@ -85,7 +85,7 @@ public class UserController {
         User user = userService.searchUser(id);
         user.setVipStatus(vipStatus);
         if (userService.updateUser(user)) {
-            return CommonReturnType.create(null, "update vipStatus success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
@@ -96,7 +96,7 @@ public class UserController {
         User user = userService.searchUser(id);
         user.setBalance(balance);
         if (userService.updateUser(user)) {
-            return CommonReturnType.create(null, "update balance success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
@@ -107,7 +107,7 @@ public class UserController {
         User user = userService.searchUser(id);
         user.setPhoneNumber(phoneNumber);
         if (userService.updateUser(user)) {
-            return CommonReturnType.create(null, "update phoneNumber success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
@@ -118,7 +118,7 @@ public class UserController {
         User user = userService.searchUser(id);
         user.setGender(gender);
         if (userService.updateUser(user)) {
-            return CommonReturnType.create(null, "update gender success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "failed");
     }
@@ -126,7 +126,7 @@ public class UserController {
     @PostMapping("/delete")
     public CommonReturnType deleteUser(@RequestParam("id") String id) {
         if (userService.deleteUser(id)) {
-            return CommonReturnType.create(null, "delete success");
+            return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "delete failed");
     }

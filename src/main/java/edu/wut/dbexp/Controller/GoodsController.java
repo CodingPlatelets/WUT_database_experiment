@@ -90,18 +90,16 @@ public class GoodsController {
 
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/update/good")
-    public CommonReturnType updateGoods(@RequestParam("goodAttributes") Integer goodAttributes,
-                                        @RequestParam("description") String description,
+    public CommonReturnType updateGood(@RequestParam("goodAttributes") Integer goodAttributes,
                                         @RequestParam("saleStatus") Boolean saleStatus,
-                                        @RequestParam("saleDate") Timestamp saleDate,
-                                        @RequestParam("isReturnAvailable") Boolean isReturnAvailable) throws Exception {
+                                        @RequestParam("saleDate") Timestamp saleDate
+                                       )throws Exception {
         String goodId = IdUtils.getPrimaryKey();
         Good good = new Good();
         good.setGoodAttributes(goodAttributes);
         good.setGoodId(goodId);
         good.setSaleStatus(saleStatus);
         good.setSaleDate(saleDate);
-        good.setSaleStatus(isReturnAvailable);
         if (goodsService.updateGood(good)) {
             return CommonReturnType.create(null, "success");
         }

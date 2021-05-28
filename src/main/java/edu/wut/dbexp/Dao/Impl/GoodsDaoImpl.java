@@ -144,5 +144,15 @@ public class GoodsDaoImpl implements GoodsDao {
             return null;
         }
     }
+
+    @Override
+    public Goods searchGoods(int goodsAttribute) {
+        String sql="select * from where goodAttributes=?";
+        try {
+            return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Goods.class),goodsAttribute);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
 }
 

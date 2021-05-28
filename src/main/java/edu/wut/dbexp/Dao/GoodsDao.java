@@ -74,5 +74,7 @@ public interface GoodsDao {
     List<Goods> selectedByStock(int num);
 
     List<Good> getAllGoodFromAttribute(int attribute);
+
+    Goods searchGoods(int goodsAttribute);
 }
 
