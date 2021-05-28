@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author lxx
  */
-@Service("UserService")
+@Service("GoodsService")
 public class GoodsServiceImpl implements GoodsService {
 
     GoodsDao goodsDao;
