@@ -1,5 +1,6 @@
 package edu.wut.dbexp.Dao.Impl;
 
+import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.Utils.DruidUtil;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Goods;
@@ -28,12 +29,10 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean addGoods(Goods goods) {
-        String sql = "insert into goods (goodAttributes, goodsId, stock, description) values(?,?,?,?)";
+        String sql = "insert into goods (goodAttributes, description) values(?,?)";
         try {
             return jdbcTemplate.update(sql,
                     goods.getGoodAttributes(),
-                    goods.getGoodsId(),
-                    goods.getStock(),
                     goods.getDescription()) == 1;
         } catch (DataAccessException e) {
             return false;
@@ -42,41 +41,77 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGoods(Goods goods) {
-        String sql = "insert into goods values(?,?,?,?,?)";
+        String sql = "update goods set description = ? where goodAttributes = ?";
         try {
-            return jdbcTemplate.update(sql, goods.getGoodAttributes(),
-                    goods.getGoodsId(),
-                    goods.getStock(),
+            return jdbcTemplate.update(sql,
                     goods.getDescription(),
-                    goods.getSaleStatus(),
-                    goods.getSaleDate(),
-                    goods.getReturnAvailable()) > 0;
+                    goods.getGoodAttributes()
+            ) > 0;
         } catch (DataAccessException e) {
             return false;
         }
     }
 
     @Override
-    public boolean deleteGoods(String goodsId) {
-        String sql = "delete from goods where goodsId=?";
+    public boolean updateGoodStock(int goodsAttribute, int stock) {
+        String sql = "update goods set stock = ? where goodAttributes = ?";
         try {
-            return jdbcTemplate.update(sql, goodsId) > 0;
+            return jdbcTemplate.update(sql,
+                    stock,
+                    goodsAttribute
+            ) > 0;
         } catch (DataAccessException e) {
             return false;
         }
     }
 
     @Override
-    public Goods searchGoods(String goodsId) {
-        try {
-            return jdbcTemplate.queryForObject(
-                    "select * from goods where goodsId=?",
-                    new BeanPropertyRowMapper<>(Goods.class),
-                    goodsId);
-        } catch (DataAccessException e) {
+    public boolean deleteGood(String goodId) {
+        String sql = "delete from good where goodId = ?";
+        try{
+            return jdbcTemplate.update(sql,goodId) == 1;
+        }catch (DataAccessException dataAccessException){
+            return false;
+        }
+    }
+
+    @Override
+    public Good searchGood(String goodId) {
+        String sql = "select * from good where goodId = ?";
+        try{
+            return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Good.class),goodId);
+        }catch (DataAccessException dataAccessException){
             return null;
         }
     }
+
+    @Override
+    public boolean updateGood(Good good) {
+        String sql = "update good set goodAttributes = ? ,saleDate = ? ,originPrice = ?,isSale = ? where goodId = ?";
+        try {
+            return jdbcTemplate.update(sql,
+                    good.getGoodAttributes(),
+                    good.getSaleDate(),
+                    good.getOriginPrice(),
+                    good.getSaleStatus(),
+                    good.getGoodId()
+            ) > 0;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertGood(Good good) {
+        String sql = "insert good (goodAttributes,goodId) value(?,?)";
+        try{
+            return jdbcTemplate.update(sql,good.getGoodAttributes(),good.getGoodId()) == 1;
+        }catch (DataAccessException d){
+            return false;
+        }
+    }
+
+
 
     @Override
     public List<Goods> getAllGoods() {
@@ -94,6 +129,18 @@ public class GoodsDaoImpl implements GoodsDao {
             return jdbcTemplate.query(
                     "select * from goods where stock< ?", new BeanPropertyRowMapper<>(Goods.class), num);
         } catch (DataAccessException dataAccessException) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Good> getAllGoodFromAttribute(int attribute) {
+        try {
+            return jdbcTemplate.query(
+                    "select * from good where goodAttributes = ?;",
+                    new BeanPropertyRowMapper<>(Good.class)
+            );
+        }catch (DataAccessException d){
             return null;
         }
     }

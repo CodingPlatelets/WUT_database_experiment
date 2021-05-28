@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping("/register")
     public CommonReturnType addUser(@RequestParam("username") String username,
                                     @RequestParam("vipStatus") int vipStatus,
-                                    @RequestParam("balance") BigDecimal balance,
+                                    @RequestParam("balance") double balance,
                                     @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("gender") int gender
     ) throws Exception {
@@ -92,7 +92,7 @@ public class UserController {
 
     @PostMapping("/update/balance")
     public CommonReturnType upadateBalance(@RequestParam("id") String id,
-                                           @RequestParam("balance") BigDecimal balance) throws Exception {
+                                           @RequestParam("balance") double balance) throws Exception {
         User user = userService.searchUser(id);
         user.setBalance(balance);
         if (userService.updateUser(user)) {

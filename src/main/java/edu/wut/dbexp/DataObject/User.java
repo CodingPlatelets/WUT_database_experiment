@@ -11,7 +11,7 @@ public class User {
     private String id;
     private String userName;
     private int vipStatus;
-    private BigDecimal balance;
+    private double balance;
     private String phoneNumber;
     private int gender;
 
@@ -29,6 +29,16 @@ public class User {
                 ", gender=" + gender +
                 '}';
     }
+
+    public User(String id, String userName, int vipStatus, double balance, String phoneNumber, int gender) {
+        this.id = id;
+        this.userName = userName;
+        this.vipStatus = vipStatus;
+        this.balance = balance;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+    }
+
 
     public String getId() {
         return id;
@@ -54,11 +64,11 @@ public class User {
         this.vipStatus = vipStatus;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

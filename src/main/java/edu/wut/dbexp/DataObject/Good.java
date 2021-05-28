@@ -1,14 +1,35 @@
 package edu.wut.dbexp.DataObject;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Good {
     private String goodId;
     private Integer goodAttributes;
     private Boolean saleStatus;
-    private Date saleDate;
+    private Timestamp saleDate;
     private boolean isSale;
     private double originPrice;
+
+    public Good(String goodId, Integer goodAttributes, Boolean saleStatus, Timestamp saleDate, boolean isSale, double originPrice) {
+        this.goodId = goodId;
+        this.goodAttributes = goodAttributes;
+        this.saleStatus = saleStatus;
+        this.saleDate = saleDate;
+        this.isSale = isSale;
+        this.originPrice = originPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Good{" +
+                "goodId='" + goodId + '\'' +
+                ", goodAttributes=" + goodAttributes +
+                ", saleStatus=" + saleStatus +
+                ", saleDate=" + saleDate +
+                ", isSale=" + isSale +
+                ", originPrice=" + originPrice +
+                '}';
+    }
 
     public String getGoodId() {
         return goodId;
@@ -34,11 +55,11 @@ public class Good {
         this.saleStatus = saleStatus;
     }
 
-    public Date getSaleDate() {
+    public Timestamp getSaleDate() {
         return saleDate;
     }
 
-    public void setSaleDate(Date saleDate) {
+    public void setSaleDate(Timestamp saleDate) {
         this.saleDate = saleDate;
     }
 
@@ -58,15 +79,6 @@ public class Good {
         this.originPrice = originPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Good{" +
-                "goodId='" + goodId + '\'' +
-                ", goodAttributes=" + goodAttributes +
-                ", saleStatus=" + saleStatus +
-                ", saleDate=" + saleDate +
-                ", isSale=" + isSale +
-                ", originPrice=" + originPrice +
-                '}';
+    public Good() {
     }
 }

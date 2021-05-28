@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 27/05/2021 22:09:12
+ Date: 28/05/2021 23:13:10
 */
 
 SET NAMES utf8mb4;
@@ -42,9 +42,9 @@ CREATE TABLE `good`  (
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `goodAttributes` int NOT NULL,
   `saleDate` datetime NULL DEFAULT NULL,
-  `saleStatus` tinyint(1) NOT NULL DEFAULT 0,
-  `originPrice` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `isSale` tinyint(1) NOT NULL,
+  `saleStatus` bit(1) NOT NULL DEFAULT b'0',
+  `originPrice` double(10, 0) NOT NULL DEFAULT 0,
+  `isSale` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`goodId`) USING BTREE,
   INDEX `goodAttributes`(`goodAttributes`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

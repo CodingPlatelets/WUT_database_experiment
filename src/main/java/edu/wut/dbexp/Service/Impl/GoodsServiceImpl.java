@@ -2,6 +2,7 @@ package edu.wut.dbexp.Service.Impl;
 
 
 import edu.wut.dbexp.Dao.GoodsDao;
+import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.DataObject.Goods;
 import edu.wut.dbexp.Service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,32 +24,41 @@ public class GoodsServiceImpl implements GoodsService {
         this.goodsDao = goodsDao;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public boolean addGoods(Goods[] goods) throws Exception {
-        for (var good : goods) {
-            if (!goodsDao.addGoods(good)) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean updateGoods(Goods goods) throws Exception {
-        return false;
-    }
-
     @Transactional(rollbackFor = Exception.class)
-    @Override
-    public boolean deleteGoods(Goods goods) throws Exception {
-        return false;
+    public boolean addGoods(Goods goods) {
+        return goodsDao.addGoods(goods);
     }
 
     @Override
-    public Goods searchGoods(String id) {
-        return goodsDao.searchGoods(id);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateGoods(Goods goods) {
+        return goodsDao.updateGoods(goods);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteGood(String goodId) {
+        return goodsDao.deleteGood(goodId);
+    }
+
+    @Override
+    public Good searchGood(String goodId) {
+        return goodsDao.searchGood(goodId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateGood(Good good) {
+        return goodsDao.updateGood(good);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean insertGood(Good good) {
+        goodsDao.insertGood(good);
+        return goodsDao.updateGoodStock(good.getGoodAttributes(),1);
     }
 
     @Override
@@ -59,5 +69,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods> selectedByStock(int num) {
         return goodsDao.selectedByStock(num);
+    }
+
+    @Override
+    public List<Good> getAllGoodFromAttribute(int attribute) {
+        return goodsDao.getAllGoodFromAttribute(attribute);
     }
 }
