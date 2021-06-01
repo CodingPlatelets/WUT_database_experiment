@@ -41,4 +41,15 @@ public class BuyerDaoImpl implements BuyerDao {
     public boolean refundGood(User user, Good good) {
         return System.currentTimeMillis()-good.getSaleDate().getTime() < 7*24*60*60*1000;
     }
+
+    @Override
+    public boolean deleteLogger(User user, Good good) {
+        String sql="delete from logger where userId=? and goodId=?";
+        try{
+            return jdbcTemplate.update(sql,user.getId(),good.getGoodId())==1;
+        }
+        catch (DataAccessException e){
+            return false;
+        }
+    }
 }

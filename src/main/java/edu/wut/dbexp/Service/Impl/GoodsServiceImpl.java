@@ -75,4 +75,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Good> getAllGoodFromAttribute(int attribute) {
         return goodsDao.getAllGoodFromAttribute(attribute);
     }
+
+    @Override
+    public Goods searchGoods(int goodsAttributes) {
+        return goodsDao.searchGoods(goodsAttributes);
+    }
 }
