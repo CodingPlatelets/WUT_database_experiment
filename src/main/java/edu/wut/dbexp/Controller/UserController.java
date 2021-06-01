@@ -55,13 +55,7 @@ public class UserController {
                                     @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("gender") int gender
     ) throws Exception {
-        User user = new User();
-        user.setId(IdUtils.getPrimaryKey());
-        user.setUserName(username);
-        user.setVipStatus(vipStatus);
-        user.setBalance(balance);
-        user.setPhoneNumber(phoneNumber);
-        user.setGender(gender);
+        User user = new User(IdUtils.getPrimaryKey(),username,vipStatus,balance,phoneNumber,gender);
         if (userService.addUser(user)) {
             return CommonReturnType.create(JSON.toJSON(user),"success");
         }
