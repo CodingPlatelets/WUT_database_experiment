@@ -52,8 +52,7 @@ public class BuyerController {
         user.setBalance(user.getBalance()-price);
         userService.updateUser(user);
         if(buyerService.buyGood(user,good)){
-            good.setSaleStatus(true);
-            good.setIsSale(true);
+            good.setSale(true);
             goodsService.updateGood(good);
             Goods goods = goodsService.searchGoods(good.getGoodAttributes());
             goods.setStock(goods.getStock()-1);
@@ -78,7 +77,7 @@ public class BuyerController {
                                    @RequestParam("balance") double balance,
                                    @RequestParam("phoneNumber") String phoneNumber,
                                    @RequestParam("gender") int gender) throws Exception {
-        Good good = new Good(goodId, goodAttributes, saleStatus, saleDate, isSale, originPrice);
+        Good good = new Good(goodId, goodAttributes, saleDate, isSale);
         User user = new User(id, username, vipStatus, balance, phoneNumber, gender);
         if(goodsService.searchGood(goodId) == null){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"This good is not exist");
@@ -87,10 +86,9 @@ public class BuyerController {
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"user is not exist");
         }
         if(buyerService.refundGood(user,good)){
-            user.setBalance(user.getBalance()+good.getOriginPrice());
+            user.setBalance(user.getBalance()+goodsService.searchGoods(goodAttributes).getOriginPrice());
             userService.updateUser(user);
-            good.setIsSale(false);
-            good.setSaleStatus(false);
+            good.setSale(false);
             goodsService.updateGood(good);
             Goods goods = goodsService.searchGoods(goodAttributes);
             goods.setStock(goods.getStock()+1);

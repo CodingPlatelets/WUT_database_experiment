@@ -69,6 +69,16 @@ public class GoodsController {
         }
     }
 
+    @PostMapping("/query/goods")
+    public CommonReturnType queryGoods(@RequestParam("goodAttributes") int goodAttributes){
+        if(goodsService.searchGoods(goodAttributes)!=null){
+            return CommonReturnType.create(JSON.toJSONString(goodsService.searchGoods(goodAttributes)),"success");
+        }
+        else{
+            return CommonReturnType.create(EmBusinessError.LACK_INFO,"goods don't exist");
+        }
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/add/goods")
     public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
@@ -79,13 +89,13 @@ public class GoodsController {
         Goods goods = new Goods();
         goods.setGoodAttributes(goodAttributes);
         goods.setDescription(description);
+        goods.setOriginPrice(originPrice);
         goods.setStock(0);
 
 
         if (goodsService.addGoods(goods)) {
             for (int i=0 ; i<stock ; ++i){
-                String goodId = IdUtils.getPrimaryKey();
-                goodsService.insertGood(goodAttributes,goodId,originPrice);
+                goodsService.insertGood(goodAttributes);
             }
             return CommonReturnType.create(null, "success");
         } else {
@@ -97,19 +107,36 @@ public class GoodsController {
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/update/good")
     public CommonReturnType updateGood(@RequestParam("goodAttributes") Integer goodAttributes,
-                                        @RequestParam("saleStatus") Boolean saleStatus,
-                                        @RequestParam("saleDate") Timestamp saleDate
+                                       @RequestParam("saleDate") Timestamp saleDate
                                        )throws Exception {
         String goodId = IdUtils.getPrimaryKey();
         Good good = new Good();
         good.setGoodAttributes(goodAttributes);
         good.setGoodId(goodId);
-        good.setSaleStatus(saleStatus);
         good.setSaleDate(saleDate);
         if (goodsService.updateGood(good)) {
             return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "update goods failed");
+    }
+
+    @PostMapping("/update/goods")
+    public CommonReturnType updateGoods(@RequestParam("goodAttributes") int goodAttributes,
+                                        @RequestParam("description") String description,
+                                        @RequestParam("stock") int stock,
+                                        @RequestParam("originPrice") double originPrice){
+        if(stock<goodsService.searchGoods(goodAttributes).getStock()){
+            return CommonReturnType.create(EmBusinessError.LACK_INFO,"error");
+        }
+        int oldStock=goodsService.searchGoods(goodAttributes).getStock();
+        Goods goods=new Goods(goodAttributes,stock,originPrice,description);
+        if(goodsService.updateGoods(goods)){
+            for (int i=oldStock;i<stock;++i){
+                goodsService.insertGood(goodAttributes);
+            }
+            return CommonReturnType.create(null,"success");
+        }
+        return CommonReturnType.create(EmBusinessError.LACK_INFO,"fail");
     }
 }
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goodsUpdate</title>
+
+    <!-- 引入必要资源文件 -->
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    
+    <script>
+        $(function() {
+            if (window.sessionStorage.getItem('goodAttributes') != undefined) {
+                var goodAttributes = window.sessionStorage.getItem('goodAttributes');
+                var description = window.sessionStorage.getItem('description');
+                var stock = window.sessionStorage.getItem('stock');
+                var balance = window.sessionStorage.getItem('balance');
+
+                $('#goodAttributes').val(goodAttributes);
+                $('#goodAttributes').prop('disabled','disabled');
+
+                $('#description').val(description);
+                $('#stock').val(stock);
+                $('#balance').val(balance);
+
+                window.sessionStorage.clear();
+            }
+            
+            //提交按钮
+            $('#submit').click(function() {
+                var goodAttributes = $('#goodAttributes').val();
+                var description = $('#description').val();
+                var stock = $('#stock').val();
+                var balance = $('#balance').val();
+
+                $.ajax({
+                    url: "http://localhost:8091/dbexp/goods/update/goods", // 请求路径
+                    type: "POST", //请求方式
+                    data: {
+                        "goodAttributes": goodAttributes , "description": description,
+                        "stock": stock, "originPrice":balance
+                    }, //请求参数
+                    async: false,
+                    dataType: "json",
+
+                    success: function (datas) {
+                        if (datas.msg == "success") {
+                            alert('商品信息更新成功！');
+                            window.location.href = 'goods.html';
+                            
+                        } else {
+                            alert(datas.msg);
+                        }
+                    },
+
+                    error: function () {
+                        alert('商品信息更新失败！');
+                    },
+
+                });
+            });
+
+
+            //返回按钮
+            $('#return').click(function() {
+                window.history.back(-1);
+            });
+
+
+
+        });
+        
+    </script>
+</head>
+<body>
+
+    
+    <div class="container" style="width: 400px;">
+        <h3 style="text-align: center;">商品信息修改</h3>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="goodAttributes">商品编号：</label>
+                <input type="text" name="goodAttributes" class="form-control" id="goodAttributes"/>
+            </div>
+
+            <div class="form-group">
+                <label for="description">更新商品描述：</label>
+                <!-- <input type="text" name="description" class="form-control" rows="3" id="description" placeholder="请输入商品描述"/> -->
+                <textarea class="form-control" rows="3" name="description" id="description"
+                    placeholder="请输入商品描述"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="balance">更新售价：</label>
+                <input type="text" name="balance" class="form-control" id="balance" placeholder="请输入商品价格" />
+            </div>
+
+            <div class="form-group">
+                <label for="stock">更新库存：</label>
+                <input type="number" name="stock" class="form-control" id="stock" placeholder="请输入商品数量" />
+            </div>
+            
+            <hr>
+        </form>  
+        
+        <div class="form-group" style="text-align: center">
+            <input class="btn btn-primary" type="submit" value="提交" id="submit"/>
+            <input class="btn btn-default" type="button" value="返回" onclick="javascript:history.go(-1)"/>
+        </div> 
+    </div>
+
+</body>
+</html>

@@ -5,30 +5,17 @@ import java.sql.Timestamp;
 public class Good {
     private String goodId;
     private Integer goodAttributes;
-    private Boolean saleStatus;
     private Timestamp saleDate;
-    private boolean isSale;
-    private double originPrice;
+    private Boolean isSale;
 
-    public Good(String goodId, Integer goodAttributes, Boolean saleStatus, Timestamp saleDate, boolean isSale, double originPrice) {
+    public Good(String goodId, Integer goodAttributes, Timestamp saleDate, boolean isSale) {
         this.goodId = goodId;
         this.goodAttributes = goodAttributes;
-        this.saleStatus = saleStatus;
         this.saleDate = saleDate;
         this.isSale = isSale;
-        this.originPrice = originPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Good{" +
-                "goodId='" + goodId + '\'' +
-                ", goodAttributes=" + goodAttributes +
-                ", saleStatus=" + saleStatus +
-                ", saleDate=" + saleDate +
-                ", isSale=" + isSale +
-                ", originPrice=" + originPrice +
-                '}';
+    public Good() {
     }
 
     public String getGoodId() {
@@ -47,14 +34,6 @@ public class Good {
         this.goodAttributes = goodAttributes;
     }
 
-    public Boolean getSaleStatus() {
-        return saleStatus;
-    }
-
-    public void setSaleStatus(Boolean saleStatus) {
-        this.saleStatus = saleStatus;
-    }
-
     public Timestamp getSaleDate() {
         return saleDate;
     }
@@ -63,22 +42,21 @@ public class Good {
         this.saleDate = saleDate;
     }
 
-    public boolean getIsSale() {
+    public boolean isSale() {
         return isSale;
     }
 
-    public void setIsSale(boolean sale) {
+    public void setSale(boolean sale) {
         isSale = sale;
     }
 
-    public double getOriginPrice() {
-        return originPrice;
-    }
-
-    public void setOriginPrice(double originPrice) {
-        this.originPrice = originPrice;
-    }
-
-    public Good() {
+    @Override
+    public String toString() {
+        return "Good{" +
+                "goodId='" + goodId + '\'' +
+                ", goodAttributes=" + goodAttributes +
+                ", saleDate=" + saleDate +
+                ", isSale=" + isSale +
+                '}';
     }
 }

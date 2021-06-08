@@ -4,6 +4,7 @@ import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.Utils.DruidUtil;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Goods;
+import edu.wut.dbexp.Utils.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -42,10 +43,11 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGoods(Goods goods) {
-        String sql = "update goods set description = ? where goodAttributes = ?";
+        String sql = "update goods set description = ? , originPrice = ? where goodAttributes = ?";
         try {
             return jdbcTemplate.update(sql,
                     goods.getDescription(),
+                    goods.getOriginPrice(),
                     goods.getGoodAttributes()
             ) > 0;
         } catch (DataAccessException e) {
@@ -88,13 +90,11 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGood(Good good) {
-        String sql = "update good set goodAttributes = ? ,saleDate = ? ,originPrice = ?,isSale = ? where goodId = ?";
+        String sql = "update good set goodAttributes = ? ,saleDate = ? ,isSale = ? where goodId = ?";
         try {
             return jdbcTemplate.update(sql,
                     good.getGoodAttributes(),
                     good.getSaleDate(),
-                    good.getOriginPrice(),
-                    good.getSaleStatus(),
                     good.getGoodId()
             ) > 0;
         } catch (DataAccessException e) {
@@ -103,10 +103,10 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public boolean insertGood(int goodAttributes,String goodId,double originPrice) {
-        String sql = "insert good (goodAttributes,goodId,originPrice) values(?,?,?)";
+    public boolean insertGood(int goodAttributes) {
+        String sql = "insert good (goodAttributes,goodId) values(?,?)";
         try{
-            return jdbcTemplate.update(sql,goodAttributes,goodId,originPrice) == 1;
+            return jdbcTemplate.update(sql,goodAttributes, IdUtils.getPrimaryKey()) == 1;
         }catch (DataAccessException d){
             return false;
         }

@@ -42,8 +42,6 @@ CREATE TABLE `good`  (
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `goodAttributes` int NOT NULL,
   `saleDate` datetime NULL DEFAULT NULL,
-  `saleStatus` bit(1) NOT NULL DEFAULT b'0',
-  `originPrice` double(10, 0) NOT NULL DEFAULT 0,
   `isSale` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`goodId`) USING BTREE,
   INDEX `goodAttributes`(`goodAttributes`) USING BTREE
@@ -60,6 +58,7 @@ DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods`  (
   `goodAttributes` int NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `originPrice` double NOT NULL DEFAULT 0.0,
   `stock` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`goodAttributes`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
@@ -67,10 +66,10 @@ CREATE TABLE `goods`  (
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES (1, NULL, 0);
-INSERT INTO `goods` VALUES (2, NULL, 0);
-INSERT INTO `goods` VALUES (3, NULL, 0);
-INSERT INTO `goods` VALUES (10, NULL, 0);
+/*INSERT INTO `goods` VALUES (1, NULL, 1,0);
+INSERT INTO `goods` VALUES (2, NULL, 2,111);
+INSERT INTO `goods` VALUES (3, NULL, 3,222);
+INSERT INTO `goods` VALUES (10, NULL, 4,333);*/
 
 -- ----------------------------
 -- Table structure for logger
@@ -79,7 +78,7 @@ DROP TABLE IF EXISTS `logger`;
 CREATE TABLE `logger`  (
   `userId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  INDEX `userId`('userId') USING BTREE,
+  INDEX `userId`(`userId`) USING BTREE,
   INDEX `goodId`(`goodId`) USING BTREE,
   CONSTRAINT `logger_ibfk_1` FOREIGN KEY (`goodId`) REFERENCES `good` (`goodId`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

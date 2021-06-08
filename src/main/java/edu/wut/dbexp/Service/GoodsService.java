@@ -50,7 +50,7 @@ public interface GoodsService {
      * @param
      * @return
      */
-    boolean insertGood(int goodAttributes,String goodId,double originPrice);
+    boolean insertGood(int goodAttributes);
 
     /**
      * This is a method for getting all goods
