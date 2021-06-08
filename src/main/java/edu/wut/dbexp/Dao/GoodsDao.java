@@ -54,10 +54,10 @@ public interface GoodsDao {
 
     /**
      * 用于插入一个新的商品
-     * @param good
+     * @param
      * @return
      */
-    boolean insertGood(Good good);
+    boolean insertGood(int goodAttributes,String goodId,double originPrice);
 
     /**
      * This is a method for getting all goods

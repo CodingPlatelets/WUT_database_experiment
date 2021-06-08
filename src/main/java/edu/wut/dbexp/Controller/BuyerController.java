@@ -9,6 +9,8 @@ import edu.wut.dbexp.Service.BuyerService;
 import edu.wut.dbexp.Service.GoodsService;
 import edu.wut.dbexp.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,40 +32,33 @@ public class BuyerController {
         this.userService = userService;
     }
 
-    @RequestMapping("/buy")
+    @Transactional
+    @PostMapping("/buy")
     public CommonReturnType buyGood(@RequestParam("goodId")  String goodId,
-                                    @RequestParam("goodAttributes") Integer goodAttributes,
-                                    @RequestParam("saleStatus") Boolean saleStatus,
-                                    @RequestParam("saleDate") Timestamp saleDate,
-                                    @RequestParam("isSale") boolean isSale,
-                                    @RequestParam("originPrice") double originPrice,
                                     @RequestParam("id") String id,
-                                    @RequestParam("username") String username,
-                                    @RequestParam("vipStatus") int vipStatus,
-                                    @RequestParam("balance") double balance,
-                                    @RequestParam("phoneNumber") String phoneNumber,
-                                    @RequestParam("gender") int gender) throws Exception {
-        Good good = new Good(goodId, goodAttributes, saleStatus, saleDate, isSale, originPrice);
-        User user = new User(id, username, vipStatus, balance, phoneNumber, gender);
+                                    @RequestParam("price") double price
+                                    ) throws Exception {
+        User user=userService.searchUser(id);
+        Good good=goodsService.searchGood(goodId);
         if(goodsService.searchGood(goodId) == null){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"This good is not exist");
         }
         if(!userService.existUser(id)){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"user is not exist");
         }
-        if(balance<originPrice){
+        if(user.getBalance()<price){
             return  CommonReturnType.create(EmBusinessError.LACK_INFO,"balance is not enough");
         }
-        user.setBalance(balance-originPrice);
+        user.setBalance(user.getBalance()-price);
         userService.updateUser(user);
         if(buyerService.buyGood(user,good)){
             good.setSaleStatus(true);
             good.setIsSale(true);
             goodsService.updateGood(good);
-            Goods goods = goodsService.searchGoods(goodAttributes);
+            Goods goods = goodsService.searchGoods(good.getGoodAttributes());
             goods.setStock(goods.getStock()-1);
             goodsService.updateGoods(goods);
-            return CommonReturnType.create(null,"success");
+            return CommonReturnType.create(price,"success");
         }
         else{
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"fail");

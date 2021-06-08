@@ -50,12 +50,11 @@ public class UserController {
 
     @PostMapping("/register")
     public CommonReturnType addUser(@RequestParam("username") String username,
-                                    @RequestParam("vipStatus") int vipStatus,
                                     @RequestParam("balance") double balance,
                                     @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("gender") int gender
     ) throws Exception {
-        User user = new User(IdUtils.getPrimaryKey(),username,vipStatus,balance,phoneNumber,gender);
+        User user = new User(IdUtils.getPrimaryKey(),username,0,balance,phoneNumber,gender);
         if (userService.addUser(user)) {
             return CommonReturnType.create(JSON.toJSON(user),"success");
         }

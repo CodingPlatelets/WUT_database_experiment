@@ -72,7 +72,9 @@ public class GoodsController {
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/add/goods")
     public CommonReturnType addGood(@RequestParam("goodAttributes") Integer goodAttributes,
-                                    @RequestParam("description") String description) throws Exception {
+                                    @RequestParam("originPrice") double originPrice,
+                                    @RequestParam("description") String description,
+                                    @RequestParam("stock") int stock) throws Exception {
 
         Goods goods = new Goods();
         goods.setGoodAttributes(goodAttributes);
@@ -81,6 +83,10 @@ public class GoodsController {
 
 
         if (goodsService.addGoods(goods)) {
+            for (int i=0 ; i<stock ; ++i){
+                String goodId = IdUtils.getPrimaryKey();
+                goodsService.insertGood(goodAttributes,goodId,originPrice);
+            }
             return CommonReturnType.create(null, "success");
         } else {
             return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your data");

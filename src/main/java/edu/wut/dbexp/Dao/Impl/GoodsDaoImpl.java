@@ -103,10 +103,10 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public boolean insertGood(Good good) {
-        String sql = "insert good (goodAttributes,goodId) value(?,?)";
+    public boolean insertGood(int goodAttributes,String goodId,double originPrice) {
+        String sql = "insert good (goodAttributes,goodId,originPrice) values(?,?,?)";
         try{
-            return jdbcTemplate.update(sql,good.getGoodAttributes(),good.getGoodId()) == 1;
+            return jdbcTemplate.update(sql,goodAttributes,goodId,originPrice) == 1;
         }catch (DataAccessException d){
             return false;
         }
@@ -148,7 +148,7 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public Goods searchGoods(int goodsAttribute) {
-        String sql="select * from where goodAttributes=?";
+        String sql="select * from goods where goodAttributes=?";
         try {
             return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Goods.class),goodsAttribute);
         } catch (DataAccessException e) {

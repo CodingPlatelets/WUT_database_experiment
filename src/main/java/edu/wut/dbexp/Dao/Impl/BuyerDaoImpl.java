@@ -28,7 +28,7 @@ public class BuyerDaoImpl implements BuyerDao {
 
     @Override
     public boolean buyGood(User user, Good good) {
-        String sql="insert into logger valuse(?,?)";
+        String sql="insert into logger values(?,?)";
         try{
             return jdbcTemplate.update(sql,user.getId(),good.getGoodId()) == 1;
         }

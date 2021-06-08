@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goodsAdd</title>
+
+    <!-- 引入必要资源文件 -->
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    
+    <script>
+        $(function() {
+            $("#return").click(function() {
+                window.location.href="goods.html";
+            });
+
+            $("#submit").click(function() {
+
+                var goodAttributes = $("#goodAttributes").val();
+                var description = $('#description').val();
+                var originPrice = $("#originPrice").val();
+                var stock = $("#stock").val();
+                // alert(goodAttributes);
+                // alert(description);
+                // alert(originPrice);
+                // alert(stock);
+                // return;
+                if(goodAttributes == "" || originPrice == "" || stock =="") {
+                    alert("请填写完整信息！");
+                    return;
+                }
+                else {
+                    $.ajax({
+                        url:"http://localhost:8091/dbexp/goods/add/goods" , // 请求路径
+                        type:"POST" , //请求方式
+                        data:{"goodAttributes":goodAttributes ,"description":description,
+                                "originPrice":originPrice, "stock" : stock},//请求参数
+
+                        //响应成功后的回调函数
+                        success:function (data) {
+                            if (data.msg == "success") {
+                                alert("商品信息添加成功！");
+                                window.location.href="goods.html";
+                            } else {
+                                alert("商品信息添加失败！");
+                            } 
+                        },
+
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error:function () {
+                            alert("商品信息添加失败！");
+                        },
+                    })
+                } 
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    
+    <div class="container" style="width: 400px;">
+        <h3 style="text-align: center;">商品信息添加</h3>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="goodAttributes">商品编号：</label>
+                <input type="text" name="goodAttributes" class="form-control" id="goodAttributes" placeholder="请输入商品编号" />
+            </div>
+            
+            <div class="form-group">
+                <label for="description">商品描述：</label>
+                <!-- <input type="text" name="description" class="form-control" rows="3" id="description" placeholder="请输入商品描述"/> -->
+                <textarea class="form-control" rows="3" name="description" id="description" placeholder="请输入商品描述"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="originPrice">原价：</label>
+                <input type="text" name="originPrice" class="form-control" id="originPrice" placeholder="请输入商品价格"/>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">数量：</label>
+                <input type="number" name="stock" class="form-control" id="stock" placeholder="请输入商品数量"/>
+            </div>
+            
+            <hr>
+
+
+        </form>
+        <div class="form-group" style="text-align: center">
+            <input class="btn btn-primary" type="submit" value="提交" id="submit"/>
+            <input class="btn btn-default" type="button" value="返回" id="return" onclick="javascript:history.go(-1)"/>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sale</title>
+
+     <!-- 新 Bootstrap 核心 CSS 文件 -->
+     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+     
+     <style>
+        td, th {
+           text-align: center;
+       }
+    </style>
+
+    <script>
+        $(function() {
+
+            //商品查询
+            $("#submit").click(function () {
+                var goodId = $("#goodId").val();
+
+                var tr = $("table tr").eq($("table tr").length - 1);
+
+                var td = tr.children();
+
+                if ($("table tr").length == 2) {
+                    var number = 1;
+                } else {
+                    var number = Number(td.eq(0).html()) + 1;
+                }
+
+                $.ajax({
+                    url: "http://localhost:8091/dbexp/goods/query/good", // 请求路径
+                    type: "POST", //请求方式
+                    data: {"goodId": goodId},//请求参数
+
+                    async: false,
+                    dataType: "json",
+
+                    //响应成功后的回调函数
+                    success: function (datas) {
+                        if (datas.msg == "success") {
+                            var data = jQuery.parseJSON(datas.data);
+
+                            var str = "<tr><td>" + number +
+                                "</td><td id='" + data.goodId + "'>" + data.goodId +
+                                "</td><td>" + data.description +
+                                "</td><td>" + "1" +
+                                "</td><td>" + data.originPrice +
+                                "</td><td>" + "<a class='btn btn-default btn-sm' onclick='Delete(this);'>删除</a>" +
+                                "</td></tr>";
+                            $("#goodTable").append(str);
+                            var total = Number($("#total").html())+data.originPrice;
+                            $("#total").html(total);
+                            /*var str = "<tr><td>" +
+                                number + "</td><td id='"+goodId+"'>" +
+                                data.goodId + "</td><td>" +
+                                data.goodId + "</td><td>" +
+                                "1" + "</td><td>" +
+                                data.originPrice +
+                                "<td>"+"<input type='button' onclick='Delete(this)' value='删除'></input>"+"</td>"+
+                                "</td></tr>";
+                            $("goodTable").append(str);*/
+                        } else {
+                            alert("查询失败!");
+                        }
+                    },
+
+                    //表示如果请求响应出现错误，会执行的回调函数
+                    error: function () {
+                        alert("不存在此商品，请重新输入！");
+                        return;
+                    },
+                })
+            });
+
+
+            //非会员购买
+            $("#nonvip").click(function () {
+                var total = $("#total").html();
+                alert("实付：" + total + "\n" + "应付：" + total);
+                window.location.href = "main.html";
+            });
+
+
+            //会员购买
+            $("#vip").click(function () {
+                var phoneNumber = $("#inputname").val();
+
+                if (phoneNumber == "") {
+                    alert('请填写用户信息！');
+                } else {
+                    /* $.ajax({
+                        url:"#" , // 请求路径
+                        type:"POST" , //请求方式
+                        data:{"phoneNumber" : phoneNumber },//请求参数
+                        async: false,
+                        dataType: "json",
+
+                        //响应成功后的回调函数
+                        success:function (data) {*/
+                    var total = 0;
+                    /*var vip = jQuery.parseJSON(good.data).vipStatu;*/
+
+                    for (let i = 1; i < $("table tr").length; i++) {
+                        var tr = $("table tr").eq(i);
+                        var td = tr.children();
+                        var goodId = td.eq(1).html();
+                        var price = td.eq(4).html();
+                        $.ajax({
+                            url: "http://localhost:8091/buyer/buy", // 请求路径
+                            type: "POST", //请求方式
+                            data: {
+                                "goodId": goodId,
+                                "id": phoneNumber,
+                                "price": price
+                            },//请求参数
+
+                            async: false,
+                            dataType: "json",
+                            //响应成功后的回调函数
+
+                            success: function (data) {
+                                if(data.msg == "success") {
+                                    var data = jQuery.parseJSON(data.data);
+                                    total += data.price;
+                                }
+                                else{
+                                    alert(data.msg);
+                                }
+                            },
+
+                            //表示如果请求响应出现错误，会执行的回调函数
+                            error: function () {
+                                alert("支付失败！");
+                                return;
+                            },
+                        });
+                    }
+
+                    /* var total_1 = total * 0.9;
+                            alert('原价：' + total + '\n' + 
+                                    '现价' + total_1);
+                            
+                        },
+
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error:function () {
+                            alert("不存在该用户！");
+                            return;
+                        },
+                    })
+                }
+            });*/
+                }
+            });
+        })
+       
+
+        //删除函数
+        function Delete(obj) {
+            var tr = $(obj).parent().parent();
+            var td = tr.children();
+
+            var total = $("#total").html() - $(td[4]).html(); 
+            $("#total").html(total);
+
+            tr.remove();
+        }
+
+        
+    </script>
+
+</head>
+<body>
+    
+
+    <div class="container">
+
+        <form class="form-inline">
+            <div class="form-group  col-md-4">
+                <label for="goodId">商品编号：</label>
+                <input type="text" class="form-control" id="goodId" placeholder="请输入商品编号" name="goodId">
+            </div>
+
+        </form>
+        <button type="submit" class="btn btn-default" id="submit">search</button>
+        <br>
+
+        <table class="table table-hover table-bordered" id="goodTable">
+            <tr class="success">
+                <th>#</th>
+                <th>商品编号</th>
+                <th>商品描述</th>
+                <th>数量</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+
+<!--            <tr>-->
+<!--                <td>1</td>-->
+<!--                <td>0001</td>-->
+<!--                <td>衣服</td>-->
+<!--                <td>1</td>-->
+<!--                <td>299.9</td>-->
+<!--                <td><a class="btn btn-default btn-sm" onclick="Delete(this);">删除</a></td>-->
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--                <td>2</td>-->
+<!--                <td>0002</td>-->
+<!--                <td>裤子</td>-->
+<!--                <td>1</td>-->
+<!--                <td>169.9</td>-->
+<!--                <td><a class="btn btn-default btn-sm" onclick="Delete(this)">删除</a></td>-->
+<!--            </tr>-->
+
+
+        </table>
+        <tr>
+            <td colspan="6">
+                <div  class="col-md-offset-11">
+
+                </div>
+
+            </td>
+        </tr>
+        <div align='right'>
+            <b>总计：<span id="total">0</span></b>
+            <br>
+            <br>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="inputname">用户ID：</label>
+                    <input type="text" class="form-control" id="inputname" placeholder="请输入用户信息">
+                </div>
+            </form>
+
+            <br>
+            <b>支付方式：</b>  
+            <input class="btn btn-default" type="button" value="非会员" id="nonvip">
+            <input class="btn btn-default" type="button" value="会员" id="vip">
+        </div>
+       
+        
+    </div>
+    
+    
+</body>
+</html>

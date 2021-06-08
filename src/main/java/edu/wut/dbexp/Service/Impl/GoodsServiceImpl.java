@@ -56,9 +56,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean insertGood(Good good) {
-        goodsDao.insertGood(good);
-        return goodsDao.updateGoodStock(good.getGoodAttributes(),goodsDao.searchGoods(good.getGoodAttributes()).getStock()+1);
+    public boolean insertGood(int goodAttributes,String goodId,double originPrice) {
+        goodsDao.insertGood(goodAttributes,goodId,originPrice);
+        return goodsDao.updateGoodStock(goodAttributes,goodsDao.searchGoods(goodAttributes).getStock()+1);
     }
 
     @Override

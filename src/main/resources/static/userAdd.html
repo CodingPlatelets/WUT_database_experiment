@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>用户信息注册</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+        $(function() {
+            $('#return').click(function() {
+                window.location.href="user.html";
+            });
+
+            $("#submit").click(function() {
+                var userName = $("#user").val();
+                var phoneNumber = $("#phone").val();
+                var balance = $("#money").val();
+                var gender = $("input[type=radio][name=gender]:checked").val();
+                if (gender == "male") {
+                    gender = 1;
+                }
+                else gender = 0;
+
+                // alert(userName);
+                // alert(phoneNumber);
+                // alert(gender);
+                // alert(balance);
+                if(userName == "" || phoneNumber == "" || balance == "") {
+                    alert("请填写完整信息！");
+                    return;
+                }
+                else {
+                    $.ajax({
+                        url:"http://localhost:8091/dbexp/user/register" , // 请求路径
+                        type:"POST" , //请求方式
+                        data:{"username" : userName, "phoneNumber" : phoneNumber,
+                               "gender" : gender, "balance" : balance },//请求参数
+
+                        async: false,
+                        dataType: "json",
+
+                        //响应成功后的回调函数
+                        success:function (data) {
+                            if (data.msg == "success") {
+                                alert("注册成功！");
+                                window.location.href = "main.html";
+                            } else {
+                                alert("注册失败，请重新注册！");
+                            }
+                            
+                        },
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error:function () {
+                            alert("注册失败，请重新注册！");
+                            return;
+                        },
+                    })
+                } 
+            });
+
+        });
+    </script>
+
+  </head>
+  <body>
+  	<div class="container" style="width: 400px;">
+  		<h3 style="text-align: center;">用户信息注册</h3>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="user">用户名：</label>
+                <input type="text" name="userName" class="form-control" id="user" placeholder="请输入用户名"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">电话：</label>
+                <input type="text" name="phoneNumber" class="form-control" id="phone" placeholder="请输入电话号码"/>
+            </div>
+            
+            <div class="form-group">
+                <label>性别：</label>
+                <input type="radio" name="gender" value="male" checked="checked"/>男
+                <input type="radio" name="gender" value="female"/>女
+            </div>
+
+            <div class="form-group">
+                <label for="money">充值金额：</label>
+                <input type="text" name="balance" class="form-control" id="money" placeholder="请输入充值金额"/>
+            </div>
+            
+            <hr>
+
+            <div class="form-group" style="text-align: center">
+                <input class="btn btn-primary" type="submit" value="提交" id="submit"/>
+                <input class="btn btn-default" type="button" value="返回" id="return"/>
+            </div>
+	  	</form>
+		
+    </div>
+      
+  </body>
+</html>

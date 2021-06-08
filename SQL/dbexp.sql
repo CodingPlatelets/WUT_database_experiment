@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS `logger`;
 CREATE TABLE `logger`  (
   `userId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`userId`) USING BTREE,
+  INDEX `userId`('userId') USING BTREE,
   INDEX `goodId`(`goodId`) USING BTREE,
   CONSTRAINT `logger_ibfk_1` FOREIGN KEY (`goodId`) REFERENCES `good` (`goodId`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
