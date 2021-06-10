@@ -30,23 +30,20 @@ public class BuyerDaoImpl implements BuyerDao {
     public boolean buyGood(User user, Good good) {
         String sql="insert into logger values(?,?)";
         try{
-            return jdbcTemplate.update(sql,user.getId(),good.getGoodId()) == 1;
+            return jdbcTemplate.update(sql,user.getId(),good.getGoodId())== 1;
         }
         catch (DataAccessException e){
             return false;
         }
     }
 
-    @Override
-    public boolean refundGood(User user, Good good) {
-        return System.currentTimeMillis()-good.getSaleDate().getTime() < 7*24*60*60*1000;
-    }
+
 
     @Override
-    public boolean deleteLogger(User user, Good good) {
-        String sql="delete from logger where userId=? and goodId=?";
+    public boolean deleteLogger(String goodId) {
+        String sql="delete from logger where goodId=?";
         try{
-            return jdbcTemplate.update(sql,user.getId(),good.getGoodId())==1;
+            return jdbcTemplate.update(sql,goodId)==1;
         }
         catch (DataAccessException e){
             return false;

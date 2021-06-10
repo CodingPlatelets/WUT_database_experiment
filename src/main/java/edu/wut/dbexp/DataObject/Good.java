@@ -1,5 +1,6 @@
 package edu.wut.dbexp.DataObject;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 public class Good {
@@ -7,12 +8,16 @@ public class Good {
     private Integer goodAttributes;
     private Timestamp saleDate;
     private Boolean isSale;
+    private Boolean canRefund;
+    private Double salePrice;
 
-    public Good(String goodId, Integer goodAttributes, Timestamp saleDate, boolean isSale) {
+    public Good(String goodId, Integer goodAttributes, Timestamp saleDate, Boolean isSale, Boolean canRefund, Double salePrice) {
         this.goodId = goodId;
         this.goodAttributes = goodAttributes;
         this.saleDate = saleDate;
         this.isSale = isSale;
+        this.canRefund = canRefund;
+        this.salePrice = salePrice;
     }
 
     public Good() {
@@ -42,12 +47,28 @@ public class Good {
         this.saleDate = saleDate;
     }
 
-    public boolean isSale() {
+    public Boolean getIsSale() {
         return isSale;
     }
 
-    public void setSale(boolean sale) {
+    public void setIsSale(Boolean sale) {
         isSale = sale;
+    }
+
+    public Boolean getCanRefund() {
+        return canRefund;
+    }
+
+    public void setCanRefund(Boolean canRefund) {
+        this.canRefund = canRefund;
+    }
+
+    public Double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(Double salePrice) {
+        this.salePrice = salePrice;
     }
 
     @Override
@@ -57,6 +78,8 @@ public class Good {
                 ", goodAttributes=" + goodAttributes +
                 ", saleDate=" + saleDate +
                 ", isSale=" + isSale +
+                ", canRefund=" + canRefund +
+                ", salePrice=" + salePrice +
                 '}';
     }
 }

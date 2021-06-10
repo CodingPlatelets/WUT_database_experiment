@@ -1,5 +1,6 @@
 package edu.wut.dbexp.Controller;
 
+import com.alibaba.fastjson.JSON;
 import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.DataObject.Goods;
 import edu.wut.dbexp.DataObject.User;
@@ -15,8 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @author zxcvbnm
+ */
 @RestController
 @RequestMapping("/buyer")
 public class BuyerController {
@@ -35,29 +42,33 @@ public class BuyerController {
     @Transactional
     @PostMapping("/buy")
     public CommonReturnType buyGood(@RequestParam("goodId")  String goodId,
-                                    @RequestParam("id") String id,
+                                    @RequestParam("phoneNumber") String phoneNumber,
                                     @RequestParam("price") double price
                                     ) throws Exception {
-        User user=userService.searchUser(id);
+        User user=userService.searchUser(phoneNumber);
         Good good=goodsService.searchGood(goodId);
         if(goodsService.searchGood(goodId) == null){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"This good is not exist");
         }
-        if(!userService.existUser(id)){
+        if(!userService.existUser(phoneNumber)){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"user is not exist");
         }
         if(user.getBalance()<price){
             return  CommonReturnType.create(EmBusinessError.LACK_INFO,"balance is not enough");
         }
-        user.setBalance(user.getBalance()-price);
+        double expense = price*Math.max(1-user.getVipStatus()*1.0/10000,0.8);
+        user.setBalance(user.getBalance()-expense);
+        user.setVipStatus(user.getVipStatus()+(int)expense);
         userService.updateUser(user);
         if(buyerService.buyGood(user,good)){
-            good.setSale(true);
+            good.setSalePrice(expense);
+            good.setIsSale(true);
+            good.setSaleDate(new Timestamp(System.currentTimeMillis()));
             goodsService.updateGood(good);
             Goods goods = goodsService.searchGoods(good.getGoodAttributes());
             goods.setStock(goods.getStock()-1);
             goodsService.updateGoods(goods);
-            return CommonReturnType.create(price,"success");
+            return CommonReturnType.create(expense,"success");
         }
         else{
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"fail");
@@ -66,31 +77,25 @@ public class BuyerController {
 
     @RequestMapping("/refund")
     public CommonReturnType refund(@RequestParam("goodId")  String goodId,
-                                   @RequestParam("goodAttributes") Integer goodAttributes,
-                                   @RequestParam("saleStatus") Boolean saleStatus,
-                                   @RequestParam("saleDate") Timestamp saleDate,
-                                   @RequestParam("isSale") boolean isSale,
-                                   @RequestParam("originPrice") double originPrice,
-                                   @RequestParam("id") String id,
-                                   @RequestParam("username") String username,
-                                   @RequestParam("vipStatus") int vipStatus,
-                                   @RequestParam("balance") double balance,
-                                   @RequestParam("phoneNumber") String phoneNumber,
-                                   @RequestParam("gender") int gender) throws Exception {
-        Good good = new Good(goodId, goodAttributes, saleDate, isSale);
-        User user = new User(id, username, vipStatus, balance, phoneNumber, gender);
+                                   @RequestParam("phoneNumber") String phoneNumber
+                                   ) throws Exception {
+
         if(goodsService.searchGood(goodId) == null){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"This good is not exist");
         }
-        if(!userService.existUser(id)){
+        if(!userService.existUser(phoneNumber)){
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"user is not exist");
         }
-        if(buyerService.refundGood(user,good)){
-            user.setBalance(user.getBalance()+goodsService.searchGoods(goodAttributes).getOriginPrice());
+        Good good = goodsService.searchGood(goodId);
+        User user = userService.searchUser(phoneNumber);
+        if(buyerService.deleteLogger(goodId)){
+            double expense=goodsService.searchGoods(good.getGoodAttributes()).getOriginPrice()*Math.max(1-user.getVipStatus()*1.0/10000,0.8);
+            user.setBalance(user.getBalance()+expense);
+            user.setVipStatus(user.getVipStatus()-(int)expense);
             userService.updateUser(user);
-            good.setSale(false);
+            good.setIsSale(false);
             goodsService.updateGood(good);
-            Goods goods = goodsService.searchGoods(goodAttributes);
+            Goods goods = goodsService.searchGoods(good.getGoodAttributes());
             goods.setStock(goods.getStock()+1);
             goodsService.updateGoods(goods);
             return CommonReturnType.create(null,"success");
@@ -98,5 +103,17 @@ public class BuyerController {
         else {
             return CommonReturnType.create(EmBusinessError.LACK_INFO, "fail");
         }
+    }
+
+    @RequestMapping("/turnover")
+    public CommonReturnType turnover(@RequestParam("date") Long date){
+        List<Good> allGood = goodsService.getAllGood();
+        List<Good> goods=new ArrayList<>();
+        for(int i=0;i<allGood.size();++i){
+            if(date<allGood.get(i).getSaleDate().getTime()){
+                goods.add(allGood.get(i));
+            }
+        }
+        return CommonReturnType.create(JSON.toJSONString(goods),"success");
     }
 }

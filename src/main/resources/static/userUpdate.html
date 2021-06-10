@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>用户信息修改</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+        $(function () {
+            if (window.sessionStorage.getItem('phoneNumber') != undefined) {
+                var phoneNumber = window.sessionStorage.getItem('phoneNumber');
+                var href = window.sessionStorage.getItem('str');
+
+                window.sessionStorage.clear();
+
+
+                //请求用户本身的信息
+                $.ajax({
+                    url: "http://localhost:8091/dbexp/user/query", // 请求路径
+                    type: "POST", //请求方式
+                    data: {
+                        "phoneNumber": phoneNumber
+                    }, //请求参数
+                    async: false,
+                    dataType: "json",
+
+                    success: function (datas) {
+                        if (datas.msg == "success") {
+
+                            var data = jQuery.parseJSON(datas.data);
+
+                            $('#user').val(data.userName);
+                            $('#phone').val(data.phoneNumber);
+                            if (data.gender == 1) {
+                                $('#male').prop('checked', 'checked');
+                            } else {
+                                $('#female').prop('checked', 'checked');
+                            }
+                            $('#balance').val(data.balance);
+
+                            $('.disable').prop('disabled', 'disabled');
+
+                            var money = $('#money').val();
+
+                            //修改余额
+                            $.ajax({
+                                url: "http://localhost:8091/dbexp/user/update", // 请求路径
+                                type: "POST", //请求方式
+                                data: {
+                                    "phoneNumber": phoneNumber,
+                                    "money": money
+                                }, //请求参数
+                                async: false,
+                                dataType: "json",
+
+                                success: function (datas) {
+                                    if (datas.msg == "success") {
+                                        alert('充值成功！');
+                                        if (href.search("user.html")) {
+                                            window.location.href = "user.html";
+                                        } else {
+                                            window.history.go(-1);
+                                        }
+                                    } else {
+                                        alert(datas.data);
+                                        window.location.href = "user.html";
+                                    }
+                                },
+
+                                error: function () {
+                                    alert('充值失败！');
+                                    window.location.href = "user.html";
+                                }
+                            });
+
+                        } else {
+                            alert(datas.data);
+                            window.history.go(-1);
+                        }
+                    },
+
+                    error: function () {
+                        alert('出现错误！');
+                        window.history.go(-1);
+                    }
+                });
+            } else {
+                alert('错误进入！');
+                window.location.href = "user.html";
+            }
+
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container" style="width: 400px;">
+        <h3 style="text-align: center;">用户信息修改</h3>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="user">用户名：</label>
+                <input type="text" name="userName" class="form-control" id="user" class="disable" />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">电话：</label>
+                <input type="text" name="phoneNumber" class="form-control" id="phone" class="disable" />
+            </div>
+
+            <div class="form-group">
+                <label>性别：</label>
+                <input type="radio" name="gender" id="male" class="disable" />男
+                <input type="radio" name="gender" id="female" class="disable" />女
+            </div>
+
+            <div class="form-group">
+                <label for="balance">余额：</label>
+                <input type="text" name="balance" class="form-control" id="balance" class="disable" />
+            </div>
+
+            <div class="form-group">
+                <label for="money">充值金额：</label>
+                <input type="text" name="money" class="form-control" id="money" placeholder="请输入充值金额" />
+            </div>
+
+            <hr>
+
+        </form>
+        <div class="form-group" style="text-align: center">
+            <input class="btn btn-primary" type="submit" value="提交" />
+            <input class="btn btn-default" type="button" value="返回" onclick="javascript:history.go(-1)" />
+        </div>
+    </div>
+
+</body>
+
+</html>

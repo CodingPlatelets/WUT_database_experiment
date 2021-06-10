@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sale</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <style>
+        td,
+        th {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        $(function () {
+
+            //商品查询
+            $("#submit").click(function () {
+
+                var goodId = $("#goodId").val();
+
+                if (goodId == "") {
+
+                    alert('请输入查询信息！');
+
+                } else {
+                    var description=null;
+                    var originPrice=0;
+                    var salePrice=0;
+                    var canRefund=false;
+                    var goodAttributes=0;
+                    $.ajax({
+                        url: "http://localhost:8091/dbexp/goods/query/good", // 请求路径
+                        type: "POST", //请求方式
+                        data: {
+                            "goodId": goodId
+                        }, //请求参数
+
+                        async: false,
+                        dataType: "json",
+
+                        //响应成功后的回调函数
+                        success: function (data) {
+                            if (data.msg == "success") {
+
+                                var data = jQuery.parseJSON(data.data);
+                                salePrice=data.salePrice;
+                                canRefund=data.canRefund;
+                                goodAttributes=data.goodAttributes;
+                                // <th>商品ID</th>
+                                // <th>商品描述</th>
+                                // <th>数量</th>
+                                // <th>原价</th>
+                                // <th>售价</th>
+                                // <th>是否可退</th>
+                                // <th>选择</th>
+
+                                //判断是否可以退货
+                            } else {
+                                alert(data.data);
+                            }
+                        },
+
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error: function () {
+                            alert("不存在此商品，请重新输入！");
+                            return;
+                        },
+                    })
+                    $.ajax({
+                        url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
+                        type: "POST", //请求方式
+                        data: {
+                            "goodAttributes": goodAttributes
+                        }, //请求参数
+
+                        async: false,
+                        dataType: "json",
+
+                        //响应成功后的回调函数
+                        success: function (data) {
+                            if (data.msg == "success") {
+
+                                var data = jQuery.parseJSON(data.data);
+                                originPrice=data.originPrice;
+                                description=data.originPrice;
+                                // <th>商品ID</th>
+                                // <th>商品描述</th>
+                                // <th>数量</th>
+                                // <th>原价</th>
+                                // <th>售价</th>
+                                // <th>是否可退</th>
+                                // <th>选择</th>
+
+                                //判断是否可以退货
+                            } else {
+                                alert(data.data);
+                            }
+                        },
+
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error: function () {
+                            alert("不存在此商品，请重新输入！");
+                            return;
+                        },
+                    })
+                    var st;
+                    if (canRefund == true) {
+                        st = "<input type='checkbox'>";
+                    } else {
+                        st = "<input type='checkbox' disabled='disabled'>"
+                    }
+
+                    var str = "<tr><td>" + goodId +
+                        "</td><td>" + description +
+                        "</td><td>" + "1" +
+                        "</td><td>" + originPrice +
+                        "</td><td>" + salePrice +
+                        "</td><td>" + canRefund +
+                        "</td><td>" + st +
+                        "</td></tr>";
+
+                    $("#goodTable").append(str);
+                }
+
+            });
+
+
+
+            //非会员退款
+            $("#nonvip").click(function () {
+
+                var obj = $("input[type = 'checkbox']:checked");
+
+                for (let i = 0; i < obj.length; i++) {
+
+                    var pa = $(obj[i]).parent().parent();
+                    var ch = pa.children();
+
+                    var id = ch.eq(0).html();
+                    var money = ch.eq(4).html();
+                    var flag = false;
+
+                    $.ajax({
+                        url: "http://localhost:8091/buyer/buy", // 请求路径
+                        type: "POST", //请求方式
+                        data: {
+                            "goodId": goodId,
+                        }, //请求参数
+
+                        async: false,
+                        dataType: "json",
+                        //响应成功后的回调函数
+
+                        success: function (data) {
+                            if (data.msg == "success") {
+                                flag = true;
+                            } else {
+                                alert(data.msg);
+                            }
+                        },
+
+                        //表示如果请求响应出现错误，会执行的回调函数
+                        error: function () {
+                            alert("退款失败！");
+                            return;
+                        },
+                    });
+
+                    if (flag == true) {
+                        //显示金额
+                        alert("退款金额：" + Number($("#total").html()) + "\n" + "退款成功！");
+                        window.location.href = "main.html";
+                    }
+
+                }
+            });
+
+
+
+            //会员退款
+            $("#vip").click(function () {
+                // var obj = $("input[type = 'checkbox']:checked");
+                // var pa = $(obj[0]).parent().parent();
+                // var ch = pa.children();
+                // var id = ch.eq(0).html();
+                // var money = ch.eq(4).html();
+                // alert(id);
+                // alert(money);
+
+                var phoneNumber = $("#phoneNumber").val();
+
+                if (phoneNumber == "") {
+
+                    alert('请填写用户信息！');
+
+                } else {
+
+                    var obj = $("input[type = 'checkbox']:checked");
+
+                    for (let i = 0; i < obj.length; i++) {
+
+                        var pa = $(obj[i]).parent().parent();
+                        var ch = pa.children();
+
+                        var id = ch.eq(0).html();
+                        var money = ch.eq(4).html();
+                        var flag = false;
+
+                        $.ajax({
+                            url: "http://localhost:8091/buyer/buy", // 请求路径
+                            type: "POST", //请求方式
+                            data: {
+                                "goodId": goodId,
+                                "phoneNumber": phoneNumber,
+                                "price": money, //通过phoneNumber返还金额到会员卡中
+                            }, //请求参数
+
+                            async: false,
+                            dataType: "json",
+                            //响应成功后的回调函数
+
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    flag = true;
+                                } else {
+                                    alert(data.msg);
+                                }
+                            },
+
+                            //表示如果请求响应出现错误，会执行的回调函数
+                            error: function () {
+                                alert("退款失败！");
+                                return;
+                            },
+                        });
+                    }
+
+                    if (flag == true) {
+                        //显示金额
+                        alert("退款金额：" + Number($("#total").html()) + "\n" + "退款成功！");
+                        window.location.href = "main.html";
+                    }
+
+                }
+            });
+
+        });
+
+
+        function check(obj) {
+            var pa = $(obj).parent().parent();
+            var ch = pa.children();
+
+            var money = ch.eq(4).html();
+            var checked = $(obj).prop("checked");
+            if (checked == true) {
+                var total = Number($("#total").html()) + Number(money);
+                $("#total").html(total);
+            } else {
+                var total = Number($("#total").html()) - Number(money);
+                $("#total").html(total);
+            }
+
+        }
+    </script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="main.html"><b>Sales System</b></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="sale.html">购买 </a></li>
+                <li class="active"><a href="saleReturn.html">退货</a></li>
+                <li><a href="user.html">用户信息管理</a></li>
+                <li><a href="goods.html">商品信息管理</a></li>
+                <li><a href="turnover.html">营业额</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">其他 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<br><br>
+<br><br>
+
+    <div class="container">
+
+        <form class="form-inline">
+            <div class="form-group  col-md-4">
+                <label for="goodId">商品ID：</label>
+                <input type="text" class="form-control" id="goodId" placeholder="请输入商品ID" name="goodId">
+            </div>
+        </form>
+        <button type="submit" class="btn btn-default" id="submit">search</button>
+        <br>
+        <br>
+
+        <table class="table table-hover table-bordered" id="goodTable">
+            <tr class="success">
+                <th>商品ID</th>
+                <th>商品描述</th>
+                <th>数量</th>
+                <th>原价</th>
+                <th>售价</th>
+                <th>是否可退</th>
+                <th>选择</th>
+            </tr>
+
+            <!--<tr>
+                <td>0191002</td>
+                <td>衣服</td>
+                <td>1</td>
+                <td>299.9</td>
+                <td>199.9</td>
+                <td>false</td>
+                <td><input type="checkbox" disabled='disabled' onclick="check(this)"></td>
+            </tr>
+
+            <tr>
+                <td>0191045</td>
+                <td>裤子</td>
+                <td>1</td>
+                <td>169.9</td>
+                <td>109.9</td>
+                <td>true</td>
+                <td><input type="checkbox" onclick="check(this)"></td>
+            </tr>-->
+
+        </table>
+
+        <div align='right'>
+            <div class="col-md-offset-10">
+                <b>退款总计：<span id="total">0</span></b>
+            </div>
+            <br>
+
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="phoneNumber">用户电话：</label>
+                    <input type="text" class="form-control" id="phoneNumber" placeholder="请输入用户电话" name="phoneNumber">
+                </div>
+            </form>
+
+            <br>
+            <b>退款方式：</b>
+            <input class="btn btn-default" type="button" value="非会员" id="nonvip">
+            <input class="btn btn-default" type="button" value="会员" id="vip">
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

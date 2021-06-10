@@ -8,6 +8,7 @@ import edu.wut.dbexp.Reponse.CommonReturnType;
 import edu.wut.dbexp.Service.GoodsService;
 import edu.wut.dbexp.Utils.IdUtils;
 import edu.wut.dbexp.Utils.MathUtils;
+import io.swagger.v3.core.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +43,25 @@ public class GoodsController {
     @PostMapping("/query/good")
     public CommonReturnType queryForOneGood(@RequestParam("goodId") String goodId) {
         Good good = goodsService.searchGood(goodId);
+        if(goodsService.refundGood(good)&&good.getIsSale()){
+            good.setCanRefund(true);
+        }
+        else{
+            good.setCanRefund(false);
+        }
         return CommonReturnType.create(JSON.toJSONString(good), "success");
     }
 
+    @PostMapping("/query/goodByAttributes")
+    public CommonReturnType queryGoodByAttributes(@RequestParam("goodAttributes") int goodAttributes){
+        if(goodsService.queryOneGoodByAttributes(goodAttributes)!=null){
+            String goodStr = JSON.toJSONString(goodsService.queryOneGoodByAttributes(goodAttributes));
+            String goodsStr = JSON.toJSONString(goodsService.searchGoods(goodAttributes));
+            return CommonReturnType.create(goodStr,"success");
+        }
+        return CommonReturnType.create(EmBusinessError.LACK_INFO,"fail");
+    }
+    
     @GetMapping("/query/all/goods")
     public CommonReturnType queryForAllGoods() {
         if (goodsService.getAllGoods() != null) {

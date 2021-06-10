@@ -2,6 +2,7 @@ package edu.wut.dbexp.Dao;
 
 import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.DataObject.Goods;
+import edu.wut.dbexp.DataObject.User;
 
 import java.util.List;
 
@@ -76,5 +77,12 @@ public interface GoodsDao {
     List<Good> getAllGoodFromAttribute(int attribute);
 
     Goods searchGoods(int goodsAttribute);
+
+    Good queryOneGoodByAttributes(int goodAttributes);
+
+    boolean refundGood(Good good);
+
+    List<Good> getAllGood();
+
 }
 

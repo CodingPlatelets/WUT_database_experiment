@@ -2,6 +2,7 @@ package edu.wut.dbexp.Service;
 
 import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.DataObject.Goods;
+import edu.wut.dbexp.DataObject.User;
 
 import java.util.List;
 
@@ -70,5 +71,9 @@ public interface GoodsService {
 
     Goods searchGoods(int goodsAttributes);
 
+    Good queryOneGoodByAttributes(int goodAttributes);
 
+    boolean refundGood(Good good);
+
+    List<Good> getAllGood();
 }

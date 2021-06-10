@@ -61,11 +61,11 @@ public class UserController {
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your information!");
     }
 
-    @PostMapping("/update/userName")
-    public CommonReturnType upadateUsername(@RequestParam("id") String id,
-                                            @RequestParam("userName") String userName) throws Exception {
-        User user = userService.searchUser(id);
-        user.setUserName(userName);
+    @PostMapping("/update")
+    public CommonReturnType upadateUsername(@RequestParam("phoneNumber") String phoneNumber,
+                                            @RequestParam("balance") double balance) throws Exception {
+        User user = userService.searchUser(phoneNumber);
+        user.setBalance(balance);
         if (userService.updateUser(user)) {
             return CommonReturnType.create(null, "success");
         }
@@ -117,11 +117,19 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public CommonReturnType deleteUser(@RequestParam("id") String id) {
-        if (userService.deleteUser(id)) {
+    public CommonReturnType deleteUser(@RequestParam("phoneNumber") String phoneNumber) {
+        if (userService.deleteUser(phoneNumber)) {
             return CommonReturnType.create(null, "success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "delete failed");
+    }
+
+    @PostMapping("/query")
+    public CommonReturnType queryUser(@RequestParam("phoneNumber") String phoneNumber){
+        if(userService.existUser(phoneNumber)){
+            return CommonReturnType.create(JSON.toJSONString(userService.searchUser(phoneNumber)),"success");
+        }
+        return CommonReturnType.create(EmBusinessError.LACK_INFO,"this user not exist");
     }
 
 }

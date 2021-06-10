@@ -28,12 +28,6 @@ public class BuyerServiceImpl implements BuyerService {
     public boolean buyGood(User user, Good good) {
         return buyerDao.buyGood(user,good);
     }
-
     @Override
-    public boolean refundGood(User user, Good good) {
-        return buyerDao.refundGood(user,good);
-    }
-
-    @Override
-    public boolean deleteLogger(User user, Good good) { return buyerDao.deleteLogger(user,good); }
+    public boolean deleteLogger(String goodId) { return buyerDao.deleteLogger(goodId); }
 }

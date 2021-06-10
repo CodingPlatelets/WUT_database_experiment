@@ -33,7 +33,7 @@ public interface UserService {
      * @param id 删除的用户id
      * @return 用户是否成功删除
      */
-    boolean deleteUser(String id);
+    boolean deleteUser(String phoneNumber);
 
     /***
      * 登录
@@ -48,5 +48,5 @@ public interface UserService {
      * @param id 用户id
      * @return id为输入的id的用户信息
      */
-    User searchUser(String id);
+    User searchUser(String phoneNumber);
 }

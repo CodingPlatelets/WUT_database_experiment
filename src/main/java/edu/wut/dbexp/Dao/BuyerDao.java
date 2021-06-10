@@ -7,7 +7,5 @@ public interface BuyerDao {
 
     boolean buyGood(User user, Good good);
 
-    boolean refundGood(User user,Good good);
-
-    boolean deleteLogger(User user,Good good);
+    boolean deleteLogger(String goodId);
 }

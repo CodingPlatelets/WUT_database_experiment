@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE `administrator`  (
   `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `id` int NOT NULL AUTO_INCREMENT,
-  `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   `userPwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1234',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
@@ -43,6 +43,8 @@ CREATE TABLE `good`  (
   `goodAttributes` int NOT NULL,
   `saleDate` datetime NULL DEFAULT NULL,
   `isSale` bit(1) NOT NULL DEFAULT b'0',
+  `canRefund` bit(1) NOT NULL DEFAULT b'0',
+  `salePrice` double NOT NULL DEFAULT 0,
   PRIMARY KEY (`goodId`) USING BTREE,
   INDEX `goodAttributes`(`goodAttributes`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -80,6 +82,7 @@ CREATE TABLE `logger`  (
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   INDEX `userId`(`userId`) USING BTREE,
   INDEX `goodId`(`goodId`) USING BTREE,
+  PRIMARY KEY (`goodId`),
   CONSTRAINT `logger_ibfk_1` FOREIGN KEY (`goodId`) REFERENCES `good` (`goodId`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -92,12 +95,13 @@ CREATE TABLE `logger`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `vipStatus` int NULL DEFAULT 0,
-  `balance` double NOT NULL DEFAULT 0,
-  `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
-  `gender` int NULL DEFAULT 0
+    `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+    `vipStatus` int NULL DEFAULT 0,
+    `balance` double NOT NULL DEFAULT 0,
+    `phoneNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+    `gender` int NULL DEFAULT 0,
+    PRIMARY KEY (`phoneNumber`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

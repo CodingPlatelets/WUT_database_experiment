@@ -2,7 +2,7 @@ openProject:
   cmd: cmd /c start
   isOpen: true
   web:
-    openUrl: http://localhost:${server.port}/swagger-ui.html
+    openUrl: http://localhost:${server.port}/main.html
 server:
   port: 8091
   servlet:

@@ -90,11 +90,13 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGood(Good good) {
-        String sql = "update good set goodAttributes = ? ,saleDate = ? ,isSale = ? where goodId = ?";
+        String sql = "update good set goodAttributes = ? ,saleDate = ? ,isSale = ? ,salePrice = ?where goodId = ?";
         try {
             return jdbcTemplate.update(sql,
                     good.getGoodAttributes(),
                     good.getSaleDate(),
+                    good.getIsSale(),
+                    good.getSalePrice(),
                     good.getGoodId()
             ) > 0;
         } catch (DataAccessException e) {
@@ -152,6 +154,34 @@ public class GoodsDaoImpl implements GoodsDao {
         try {
             return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Goods.class),goodsAttribute);
         } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Good queryOneGoodByAttributes(int goodAttributes) {
+        String sql="select * from good where goodAttributes = ? and isSale = false";
+        try{
+            List<Good> good = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Good.class), goodAttributes);
+            return good.get(0);
+        }
+        catch (DataAccessException e){
+            return null;
+        }
+    }
+
+    @Override
+    public boolean refundGood(Good good) {
+        return System.currentTimeMillis()-good.getSaleDate().getTime() < 7*24*60*60*1000;
+    }
+
+    @Override
+    public List<Good> getAllGood(){
+        String sql="select * from good where isSale = true";
+        try{
+            return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Good.class));
+        }
+        catch (DataAccessException e){
             return null;
         }
     }

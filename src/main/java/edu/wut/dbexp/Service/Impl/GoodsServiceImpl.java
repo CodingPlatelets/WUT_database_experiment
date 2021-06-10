@@ -4,6 +4,7 @@ package edu.wut.dbexp.Service.Impl;
 import edu.wut.dbexp.Dao.GoodsDao;
 import edu.wut.dbexp.DataObject.Good;
 import edu.wut.dbexp.DataObject.Goods;
+import edu.wut.dbexp.DataObject.User;
 import edu.wut.dbexp.Service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,4 +81,18 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods searchGoods(int goodsAttributes) {
         return goodsDao.searchGoods(goodsAttributes);
     }
+
+    @Override
+    public Good queryOneGoodByAttributes(int goodAttributes) {
+        return goodsDao.queryOneGoodByAttributes(goodAttributes);
+    }
+
+    @Override
+    public boolean refundGood(Good good) {
+        return goodsDao.refundGood(good);
+    }
+
+    @Override
+    public List<Good> getAllGood(){return goodsDao.getAllGood();}
+
 }

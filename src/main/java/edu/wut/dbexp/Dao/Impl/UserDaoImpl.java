@@ -45,25 +45,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean existUser(String id) {
-        return searchUser(id) != null;
+    public boolean existUser(String phoneNumber) {
+        return searchUser(phoneNumber) != null;
     }
 
     @Override
-    public boolean deleteUser(String id) {
-        String sql = "delete from user where id=?";
+    public boolean deleteUser(String phoneNumber) {
+        String sql = "delete from user where phoneNumber=?";
         try {
-            return jdbcTemplate.update(sql, id) > 0;
+            return jdbcTemplate.update(sql, phoneNumber) > 0;
         } catch (DataAccessException e) {
             return false;
         }
     }
 
     @Override
-    public User searchUser(String id) {
-        String sql = "select * from user where id=?";
+    public User searchUser(String phoneNumber) {
+        String sql = "select * from user where phoneNumber=?";
         try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), id);
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
         } catch (DataAccessException e) {
             return null;
         }

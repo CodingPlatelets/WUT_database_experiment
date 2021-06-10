@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existUser(String id) {
-        return userDao.existUser(id);
+    public boolean existUser(String phoneNumber) {
+        return userDao.existUser(phoneNumber);
     }
 
     @Override
-    public boolean deleteUser(String id) {
-        return userDao.deleteUser(id);
+    public boolean deleteUser(String phoneNumber) {
+        return userDao.deleteUser(phoneNumber);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User searchUser(String id) {
-        return userDao.searchUser(id);
+    public User searchUser(String phoneNumber) {
+        return userDao.searchUser(phoneNumber);
     }
 }
 

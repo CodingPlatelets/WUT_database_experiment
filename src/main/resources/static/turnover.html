@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>turnover</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <scrip src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></scrip>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <style>
+        td,
+        th {
+            text-align: center;
+        }
+    </style>
+
+
+    <script>
+        $(function () {
+            var myDate = new Date();
+            // alert(myDate.toLocaleDateString());
+            var date = myDate.toLocaleDateString(); //格式2021-06-08
+            var moveInArray = date.split('/');
+            var d = new Date();
+            d.setYear(moveInArray[0]);
+            d.setMonth(moveInArray[1]-1);
+            d.setDate(moveInArray[2]);
+            var moveIn = d.getTime();
+            // alert(moveIn);
+
+                $.ajax({
+                    url: "http://localhost:8091/buyer/turnover", // 请求路径
+                    type: "POST", //请求方式
+                    data: {
+                        "date": moveIn
+                    }, //请求参数
+
+                    async: false,
+                    dataType: "json",
+
+                    //响应成功后的回调函数
+                    success: function (data) {
+                        var data = jQuery.parseJSON(data.data);
+                        // <tr class="active">
+                        // <th>商品ID</th>
+                        // <th>商品描述</th>
+                        // <th>数量</th>
+                        // <th>原价</th>
+                        // <th>售价</th>
+                        // </tr>
+                        var originPrice;
+
+                        $('#goodTable').empty();
+                        var str = "<tr class=\"active\">\n" +
+                            "                <th>商品ID</th>\n" +
+                            "                <th>商品编号</th>\n" +
+                            "                <th>数量</th>\n" +
+                            "                <th>原价</th>\n" +
+                            "                <th>售价</th>\n" +
+                            "            </tr>";
+
+                        $('#goodTable').append(str);
+                        var total = 0;
+
+                        for (let i = 0; i < data.length; i++) {
+                            $.ajax({
+                                url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
+                                type: "POST", //请求方式
+                                data: {
+                                    "goodAttributes": data[i].goodAttributes
+                                }, //请求参数
+
+                                async: false,
+                                dataType: "json",
+                                success: function(data){
+                                    var data=jQuery.parseJSON(data.data);
+                                    originPrice=data.originPrice;
+                                }
+                            })
+                            var str = "<tr><td>" + data[i].goodId +
+                                "</td><td>" + data[i].goodAttributes +
+                                "</td><td>" + "1" +
+                                "</td><td>" +  originPrice+
+                                "</td><td>" + data[i].salePrice +
+                                "</td></tr>";
+
+                            $('#goodTable').append(str);
+                            total += data[i].salePrice;
+                        }
+
+                        $('#total').html('营业额:' + total);
+                    },
+
+                    error: function () {
+                        alert('查询失败');
+                    }
+                });
+
+
+            $("#search").click(function () {
+
+                var date = $("#date").val(); //格式2021-06-08
+                var moveInArray = $("#date").val().split('-');
+                var d = new Date();
+                d.setYear(moveInArray[0]);
+                d.setMonth(moveInArray[1]-1);
+                d.setDate(moveInArray[2]);
+                var moveIn = d.getTime();
+                // alert(moveIn);
+                if (date == "") {
+                    alert('请输入查询日期！');
+                } else {
+
+                    $.ajax({
+                        url: "http://localhost:8091/buyer/turnover", // 请求路径
+                        type: "POST", //请求方式
+                        data: {
+                            "date": moveIn
+                        }, //请求参数
+
+                        async: false,
+                        dataType: "json",
+
+                        //响应成功后的回调函数
+                        success: function (data) {
+                            var data = jQuery.parseJSON(data.data);
+                            // <tr class="active">
+                            // <th>商品ID</th>
+                            // <th>商品描述</th>
+                            // <th>数量</th>
+                            // <th>原价</th>
+                            // <th>售价</th>
+                            // </tr>
+                            var originPrice;
+
+                                $('#goodTable').empty();
+                            var str = "<tr class=\"active\">\n" +
+                                "                <th>商品ID</th>\n" +
+                                "                <th>商品编号</th>\n" +
+                                "                <th>数量</th>\n" +
+                                "                <th>原价</th>\n" +
+                                "                <th>售价</th>\n" +
+                                "            </tr>";
+
+                            $('#goodTable').append(str);
+                            var total = 0;
+
+                            for (let i = 0; i < data.length; i++) {
+                                $.ajax({
+                                    url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
+                                    type: "POST", //请求方式
+                                    data: {
+                                        "goodAttributes": data[i].goodAttributes
+                                    }, //请求参数
+
+                                    async: false,
+                                    dataType: "json",
+                                    success: function(data){
+                                        var data=jQuery.parseJSON(data.data);
+                                        originPrice=data.originPrice;
+                                    }
+                                })
+                                var str = "<tr><td>" + data[i].goodId +
+                                    "</td><td>" + data[i].goodAttributes +
+                                    "</td><td>" + "1" +
+                                    "</td><td>" +  originPrice+
+                                    "</td><td>" + data[i].salePrice +
+                                    "</td></tr>";
+
+                                $('#goodTable').append(str);
+                                total += data[i].salePrice;
+                            }
+
+                            $('#total').html('营业额:' + total);
+                        },
+
+                        error: function () {
+                            alert('查询失败');
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="main.html"><b>Sales System</b></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="sale.html">购买 </a></li>
+                    <li><a href="saleReturn.html">退货</a></li>
+                    <li><a href="user.html">用户信息管理</a></li>
+                    <li><a href="goods.html">商品信息管理</a></li>
+                    <li class="active"><a href="turnover.html">营业额</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">其他 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <br><br>
+    <br><br>
+
+    <div class="container">
+
+        <form class="form-inline">
+            <div class="form-group col-md-3">
+                <label for="date">日期：</label>
+                <input type="date" class="form-control" id="date" name="date">
+            </div>
+        </form>
+        <button type="submit" class="btn btn-default" id="search">search</button>
+        <br>
+        <br>
+
+        <table class="table table-hover table-bordered" id="goodTable">
+            <tr class="active">
+                <th>商品ID</th>
+                <th>商品编号</th>
+                <th>数量</th>
+                <th>原价</th>
+                <th>售价</th>
+            </tr>
+
+            <!--<tr>
+                <td>0001</td>
+                <td>衣服</td>
+                <td>1</td>
+                <td>11</td>
+                <td>11</td>
+            </tr>
+
+            <tr>
+                <td>0002</td>
+                <td>裤子</td>
+                <td>1</td>
+                <td>11</td>
+                <td>11</td>
+            </tr>-->
+
+        </table>
+
+        <div  style="color:rgb(56, 4, 4);" align="right">
+            <!-- <b>营业额:<span id="total">0</span></b> -->
+            <b><span id="total"></span></b>
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
