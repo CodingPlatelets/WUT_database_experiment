@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateUser(User user) {
-        deleteUser(user.getId());
+        deleteUser(user.getPhoneNumber());
         return addUser(user);
     }
 
