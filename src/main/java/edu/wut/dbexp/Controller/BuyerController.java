@@ -89,7 +89,7 @@ public class BuyerController {
         Good good = goodsService.searchGood(goodId);
         User user = userService.searchUser(phoneNumber);
         if(buyerService.deleteLogger(goodId)){
-            double expense=goodsService.searchGoods(good.getGoodAttributes()).getOriginPrice()*Math.max(1-user.getVipStatus()*1.0/10000,0.8);
+            double expense=goodsService.searchGood(goodId).getSalePrice();
             user.setBalance(user.getBalance()+expense);
             user.setVipStatus(user.getVipStatus()-(int)expense);
             userService.updateUser(user);
