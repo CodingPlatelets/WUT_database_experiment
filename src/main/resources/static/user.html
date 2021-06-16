@@ -1,83 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>user</title>
 
-     <!-- 新 Bootstrap 核心 CSS 文件 -->
-     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
-     <style>
-         td, th {
+    <style>
+        td,
+        th {
             text-align: center;
         }
-     </style>
-     
-     <script>
+    </style>
 
-        $(function() {
+    <script>
+        $(function () {
 
             //查询按钮
-            $("#search").click(function() {
+            $("#search").click(function () {
                 var phoneNumber = $("#phoneNumber").val();
 
-                if (phoneNumber == "") {
-                    alert('请输入查询信息！');
-                } else {
-                    $.ajax({
-                        url:"http://localhost:8091/dbexp/user/query" , // 请求路径
-                        type:"POST" , //请求方式
-                        data:{"phoneNumber" : phoneNumber },//请求参数
-                        async: false,
-                        dataType: "json",
+                $.ajax({
+                    url: "http://localhost:8091/dbexp/user/query", // 请求路径
+                    type: "POST", //请求方式
+                    data: {
+                        "phoneNumber": phoneNumber
+                    }, //请求参数
+                    async: false,
+                    dataType: "json",
 
-                        success:function(datas) {
-                            if (datas.msg == "success") {
+                    success: function (datas) {
+                        if (datas.msg == "success") {
 
-                                var data = jQuery.parseJSON(datas.data);
-                                if (data.gender == 1) {
+                            var data = jQuery.parseJSON(datas.data);
+
+                            $("#goodTable").empty();
+                            var str_th =
+                                "<tr class='warning'><th>用户名</th><th>电话</th><th>VIP等级</th><th>性别</th><th>余额</th><th>操作</th></tr>";
+                            $("#goodTable").append(str_th);
+
+                            for (let i = 0; i < data.length; i++) {
+                                if (data[i].gender == 1) {
                                     var gender = "男"
                                 } else {
                                     var gender = "女"
                                 }
-
-                                var str_th = "<tr class='warning'><th>用户名</th><th>电话</th><th>VIP等级</th><th>性别</th><th>余额</th><th>操作</th></tr>";
-                                var str = "<tr><td>" + data.userName +
-                                    "</td><td>" + data.phoneNumber +
-                                    "</td><td>" + data.vipStatus +
+                                var str = "<tr><td>" + data[i].userName +
+                                    "</td><td>" + data[i].phoneNumber +
+                                    "</td><td>" + data[i].vipStatus +
                                     "</td><td>" + gender +
-                                    "</td><td>" + data.balance +
-                                    "</td><td>" + "<a class='btn btn-default btn-sm' onclick='Update(this)'>修改</a>&nbsp;<a class='btn btn-default btn-sm' onclick='Delete(this);'>删除</a>" +
+                                    "</td><td>" + data[i].balance +
+                                    "</td><td>" +
+                                    "<a class='btn btn-default btn-sm' onclick='Update(this)'>修改</a>&nbsp;<a class='btn btn-default btn-sm' onclick='Delete(this);'>删除</a>" +
                                     "</td></tr>";
-                                $("#goodTable").empty();
-                                $("#goodTable").append(str_th);
                                 $("#goodTable").append(str);
-                                return;
-                            } else {
-                                alert(datas.msg);
                             }
-                        },
+                        } else {
+                            alert(datas.msg);
+                        }
+                    },
 
-                        error:function() {
-                            alert('不存在该用户！');
-                        },
-                    })   
-                }
+                    error: function () {
+                        alert('不存在该用户！');
+                    },
+                })
+
             });
 
             //新增按钮
-            $("#add").click(function() {
+            $("#add").click(function () {
                 window.location.href = "userAdd.html";
             });
-           
+
         });
-        
+
         //删除函数
         function Delete(obj) {
             var tr = $(obj).parent().parent();
@@ -85,13 +89,15 @@
 
             var phoneNumber = $(td[1]).html();
             $.ajax({
-                url:"http://localhost:8091/dbexp/user/delete" , // 请求路径
-                type:"POST" , //请求方式
-                data:{"phoneNumber" : phoneNumber },//请求参数
+                url: "http://localhost:8091/dbexp/user/delete", // 请求路径
+                type: "POST", //请求方式
+                data: {
+                    "phoneNumber": phoneNumber
+                }, //请求参数
                 async: false,
                 dataType: "json",
 
-                success:function(datas) {
+                success: function (datas) {
                     if (datas.msg == "success") {
                         tr.remove();
                         return;
@@ -100,10 +106,10 @@
                     }
                 },
 
-                error:function() {
+                error: function () {
                     alert('用户信息删除失败！');
                 },
-            })   
+            })
         }
 
 
@@ -113,60 +119,59 @@
             var tr = $(obj).parent().parent();
             var td = tr.children();
             window.sessionStorage.setItem('phoneNumber', $(td[1]).html());
-            window.sessionStorage.setItem('str',window.location.href);
-            
-            window.location.href= 'userUpdate.html';
+            window.sessionStorage.setItem('str', window.location.href);
+
+            window.location.href = 'userUpdate.html';
         }
-
-
-     </script>
+    </script>
 </head>
+
 <body>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="main.html"><b>Sales System</b></a>
-        </div>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../../dbexp-master/src/main/resources/static/main.html"><b>Sales System</b></a>
+            </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="sale.html">购买 </a></li>
-                <li><a href="saleReturn.html">退货</a></li>
-                <li class="active"><a href="user.html">用户信息管理</a></li>
-                <li><a href="goods.html">商品信息管理</a></li>
-                <li><a href="turnover.html">营业额</a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../../dbexp-master/src/main/resources/static/sale.html">购买 </a></li>
+                    <li><a href="../../../../../dbexp-master/src/main/resources/static/saleReturn.html">退货</a></li>
+                    <li class="active"><a href="user.html">用户信息管理</a></li>
+                    <li><a href="goods.html">商品信息管理</a></li>
+                    <li><a href="../../../../../dbexp-master/src/main/resources/static/turnover.html">营业额</a></li>
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">其他 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">其他 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
 
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 
-<br><br>
-<br><br>
+    <br><br>
+    <br><br>
 
     <div class="container">
 
@@ -178,13 +183,13 @@
         </form>
         <div class="col-md-1">
             <button type="submit" class="btn btn-default" id="search">查询</button>
-        </div> 
+        </div>
         <button type="button" class="btn btn-default" id="add">新增</button>
         <br>
         <br>
 
         <table border="1" class="table table-bordered table-hover" id="goodTable">
-            <tr class='warning' >
+            <tr class='warning'>
                 <th>用户名</th>
                 <th>电话</th>
                 <th>VIP等级</th>
@@ -193,7 +198,7 @@
                 <th>操作</th>
             </tr>
 
-           <!-- <tr>
+            <!-- <tr>
                 <td>张三</td>
                 <td>15327388892</td>
                 <td>9</td>
@@ -211,9 +216,10 @@
                 <td><a class="btn btn-default btn-sm" onclick="Update(this)">修改</a>&nbsp;<a class="btn btn-default btn-sm" onclick="Delete(this);">删除</a></td>
             </tr>-->
 
-        </table>      
+        </table>
     </div>
-    
+
 
 </body>
+
 </html>
