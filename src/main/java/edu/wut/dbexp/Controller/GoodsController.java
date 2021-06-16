@@ -14,10 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author wenkan
  * @use 商品操作逻辑
@@ -61,7 +57,7 @@ public class GoodsController {
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO,"fail");
     }
-    
+
     @GetMapping("/query/all/goods")
     public CommonReturnType queryForAllGoods() {
         if (goodsService.getAllGoods() != null) {

@@ -2,6 +2,8 @@ package edu.wut.dbexp.Dao;
 
 import edu.wut.dbexp.DataObject.User;
 
+import java.util.List;
+
 /**
  * @author wenka
  * @date 2021/5/219:12
@@ -41,5 +43,7 @@ public interface UserDao {
      * @return id为该id的用户信息
      */
     User searchUser(String phoneNumber);
+
+    List<User> searchUsers(String phoneNumber);
 
 }

@@ -127,7 +127,7 @@ public class UserController {
     @PostMapping("/query")
     public CommonReturnType queryUser(@RequestParam("phoneNumber") String phoneNumber){
         if(userService.existUser(phoneNumber)){
-            return CommonReturnType.create(JSON.toJSONString(userService.searchUser(phoneNumber)),"success");
+            return CommonReturnType.create(JSON.toJSONString(userService.searchUsers(phoneNumber)),"success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO,"this user not exist");
     }

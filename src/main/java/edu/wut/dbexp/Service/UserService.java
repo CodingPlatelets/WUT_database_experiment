@@ -2,6 +2,8 @@ package edu.wut.dbexp.Service;
 
 import edu.wut.dbexp.DataObject.User;
 
+import java.util.List;
+
 /**
  * @author wenkan
  * @date 2021/5/21 9:08
@@ -49,4 +51,6 @@ public interface UserService {
      * @return id为输入的id的用户信息
      */
     User searchUser(String phoneNumber);
+
+    List<User> searchUsers(String phoneNumber);
 }

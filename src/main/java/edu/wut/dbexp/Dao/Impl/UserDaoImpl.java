@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author wenkan
  * @date 2021/5/22 14:34
@@ -61,9 +63,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User searchUser(String phoneNumber) {
-        String sql = "select * from user where phoneNumber=?";
+        String sql = "select * from user where phoneNumber=?;";
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> searchUsers(String phoneNumber) {
+        String sql = "select * from user where phoneNumber like %?%;";
+        try {
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
         } catch (DataAccessException e) {
             return null;
         }

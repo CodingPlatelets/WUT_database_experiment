@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author wenkan
  * @date 2021/5/21 13:15
@@ -53,6 +55,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User searchUser(String phoneNumber) {
         return userDao.searchUser(phoneNumber);
+    }
+
+    @Override
+    public List<User> searchUsers(String phoneNumber) {
+        return userDao.searchUsers(phoneNumber);
     }
 }
 
