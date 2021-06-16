@@ -73,7 +73,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> searchUsers(String phoneNumber) {
-        String sql = "select * from user where phoneNumber like %?%;";
+        String sql = "select * from user where phoneNumber like CONCAT('%',?,'%')";
         try {
             return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
         } catch (DataAccessException e) {

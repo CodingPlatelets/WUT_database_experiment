@@ -65,7 +65,8 @@ public class UserController {
     public CommonReturnType upadateUsername(@RequestParam("phoneNumber") String phoneNumber,
                                             @RequestParam("balance") double balance) throws Exception {
         User user = userService.searchUser(phoneNumber);
-        user.setBalance(balance);
+        var ba = user.getBalance() + balance;
+        user.setBalance(ba);
         if (userService.updateUser(user)) {
             return CommonReturnType.create(null, "success");
         }
@@ -127,9 +128,13 @@ public class UserController {
     @PostMapping("/query")
     public CommonReturnType queryUser(@RequestParam("phoneNumber") String phoneNumber){
         if(userService.existUser(phoneNumber)){
-            return CommonReturnType.create(JSON.toJSONString(userService.searchUsers(phoneNumber)),"success");
+            return CommonReturnType.create(JSON.toJSONString(userService.searchUser(phoneNumber)),"success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO,"this user not exist");
+    }
+    @PostMapping("/queryMH")
+    public CommonReturnType queryUsers(@RequestParam("phoneNumber") String phoneNumber){
+        return CommonReturnType.create(JSON.toJSONString(userService.searchUsers(phoneNumber)),"success");
     }
 
 }
