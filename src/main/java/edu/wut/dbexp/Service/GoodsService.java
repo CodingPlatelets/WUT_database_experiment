@@ -76,4 +76,6 @@ public interface GoodsService {
     boolean refundGood(Good good);
 
     List<Good> getAllGood();
+
+    List<Goods> searchGoodsMH(Integer goodAttributes);
 }

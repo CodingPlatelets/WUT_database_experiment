@@ -185,5 +185,15 @@ public class GoodsDaoImpl implements GoodsDao {
             return null;
         }
     }
+    @Override
+    public List<Goods> searchGoodsMH(Integer goodAttributes) {
+        String sql="select * from goods where goodAttributes like CONCAT('%',?,'%')";
+        try {
+            return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Goods.class),goodAttributes);
+        }
+        catch (DataAccessException e) {
+            return null;
+        }
+    }
 }
 
