@@ -46,9 +46,6 @@
                             "goodId": goodId
                         }, //请求参数
 
-                        async: false,
-                        dataType: "json",
-
                         //响应成功后的回调函数
                         success: function (data) {
                             if (data.msg == "success") {
@@ -152,7 +149,7 @@
                     var flag = false;
 
                     $.ajax({
-                        url: "http://localhost:8091/buyer/buy", // 请求路径
+                        url: "http://localhost:8091/buyer/refundNoVip", // 请求路径
                         type: "POST", //请求方式
                         data: {
                             "goodId": goodId,
@@ -218,12 +215,11 @@
                         var flag = false;
 
                         $.ajax({
-                            url: "http://localhost:8091/buyer/buy", // 请求路径
+                            url: "http://localhost:8091/buyer/refund", // 请求路径
                             type: "POST", //请求方式
                             data: {
                                 "goodId": goodId,
-                                "phoneNumber": phoneNumber,
-                                "price": money, //通过phoneNumber返还金额到会员卡中
+                                "phoneNumber": phoneNumber//通过phoneNumber返还金额到会员卡中
                             }, //请求参数
 
                             async: false,

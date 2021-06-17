@@ -75,6 +75,25 @@ public class BuyerController {
         }
     }
 
+    @Transactional
+    @PostMapping("/buyNoVip")
+    public CommonReturnType buyGoodNonVip(@RequestParam("goodId")  String goodId,
+                                    @RequestParam("price") double price
+    ) throws Exception {
+        Good good = goodsService.searchGood(goodId);
+        if (buyerService.buyGood(null, good)) {
+            good.setSalePrice(price);
+            good.setIsSale(true);
+            good.setSaleDate(new Timestamp(System.currentTimeMillis()));
+            goodsService.updateGood(good);
+            Goods goods = goodsService.searchGoods(good.getGoodAttributes());
+            goods.setStock(goods.getStock() - 1);
+            goodsService.updateGoods(goods);
+            return CommonReturnType.create(price, "success");
+        } else {
+            return CommonReturnType.create(EmBusinessError.LACK_INFO, "fail");
+        }
+    }
     @RequestMapping("/refund")
     public CommonReturnType refund(@RequestParam("goodId")  String goodId,
                                    @RequestParam("phoneNumber") String phoneNumber
@@ -93,6 +112,27 @@ public class BuyerController {
             user.setBalance(user.getBalance()+expense);
             user.setVipStatus(user.getVipStatus()-(int)expense);
             userService.updateUser(user);
+            good.setIsSale(false);
+            goodsService.updateGood(good);
+            Goods goods = goodsService.searchGoods(good.getGoodAttributes());
+            goods.setStock(goods.getStock()+1);
+            goodsService.updateGoods(goods);
+            return CommonReturnType.create(null,"success");
+        }
+        else {
+            return CommonReturnType.create(EmBusinessError.LACK_INFO, "fail");
+        }
+    }
+
+    @RequestMapping("/refundNoVip")
+    public CommonReturnType refundNoVip(@RequestParam("goodId")  String goodId) throws Exception {
+
+        if(goodsService.searchGood(goodId) == null){
+            return CommonReturnType.create(EmBusinessError.LACK_INFO,"This good is not exist");
+        }
+        Good good = goodsService.searchGood(goodId);
+        if(buyerService.deleteLogger(goodId)){
+            double expense=goodsService.searchGood(goodId).getSalePrice();
             good.setIsSale(false);
             goodsService.updateGood(good);
             Goods goods = goodsService.searchGoods(good.getGoodAttributes());

@@ -56,7 +56,7 @@ public class UserController {
     ) throws Exception {
         User user = new User(IdUtils.getPrimaryKey(),username,0,balance,phoneNumber,gender);
         if (userService.addUser(user)) {
-            return CommonReturnType.create(JSON.toJSON(user),"success");
+            return CommonReturnType.create(JSON.toJSONString(user),"success");
         }
         return CommonReturnType.create(EmBusinessError.LACK_INFO, "check your information!");
     }

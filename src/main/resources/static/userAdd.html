@@ -53,6 +53,7 @@
                         success:function (data) {
                             if (data.msg == "success") {
                                 alert("注册成功！");
+                                window.location.href = "user.html";
                                 // window.location.href = "sale.html"
                                 window.history.go(-1);
                             } else {
@@ -62,7 +63,7 @@
                         },
                         //表示如果请求响应出现错误，会执行的回调函数
                         error:function () {
-                            alert("注册失败，请重新注册！响应错误");
+                            alert("注册失败，请重新注册！");
                             return;
                         },
                     })
