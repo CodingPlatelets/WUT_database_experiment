@@ -83,9 +83,13 @@ public class GoodsController {
     }
 
     @PostMapping("/query/goods")
-    public CommonReturnType queryGoods(@RequestParam("goodAttributes") int goodAttributes){
-        if(goodsService.searchGoods(goodAttributes)!=null){
-            return CommonReturnType.create(JSON.toJSONString(goodsService.searchGoods(goodAttributes)),"success");
+    public CommonReturnType queryGoods(@RequestParam("goodAttributes") String sgoodAttributes){
+        if("".equals(sgoodAttributes)){
+            return CommonReturnType.create(JSON.toJSONString(goodsService.getAllGoods()),"success");
+        }
+        int goodAttributes=Integer.parseInt(sgoodAttributes);
+        if(goodsService.searchGoodsMH(goodAttributes)!=null){
+            return CommonReturnType.create(JSON.toJSONString(goodsService.searchGoodsMH(goodAttributes)),"success");
         }
         else{
             return CommonReturnType.create(EmBusinessError.LACK_INFO,"goods don't exist");

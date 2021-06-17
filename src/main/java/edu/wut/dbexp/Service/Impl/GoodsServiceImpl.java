@@ -95,4 +95,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Good> getAllGood(){return goodsDao.getAllGood();}
 
+    @Override
+    public List<Goods> searchGoodsMH(Integer goodAttributes) {
+        return goodsDao.searchGoodsMH(goodAttributes);
+    }
+
 }

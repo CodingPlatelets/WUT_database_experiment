@@ -84,5 +84,7 @@ public interface GoodsDao {
 
     List<Good> getAllGood();
 
+    List<Goods> searchGoodsMH(Integer goodAttributes);
+
 }
 
