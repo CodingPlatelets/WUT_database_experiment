@@ -91,7 +91,7 @@
                         if (datas.msg == "success") {
                             alert('充值成功！');
                         } else {
-                            alert(datas.data);
+                            alert('充值失败！');
                         }
 
                         if (href.search("user.html")) {
@@ -103,8 +103,12 @@
                     },
 
                     error: function () {
-                        alert('充值失败！');
-                        window.location.href = "user.html";
+                        alert('响应失败！');
+                        if (href.search("user.html")) {
+                            window.location.href = "user.html";
+                        } else {
+                            window.history.go(-1);
+                        }
                     }
                 });
             });
