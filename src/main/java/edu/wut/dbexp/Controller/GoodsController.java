@@ -142,13 +142,13 @@ public class GoodsController {
                                         @RequestParam("description") String description,
                                         @RequestParam("stock") int stock,
                                         @RequestParam("originPrice") double originPrice){
-        if(stock<goodsService.searchGoods(goodAttributes).getStock()){
-            return CommonReturnType.create(EmBusinessError.LACK_INFO,"error");
-        }
         int oldStock=goodsService.searchGoods(goodAttributes).getStock();
-        Goods goods=new Goods(goodAttributes,stock,originPrice,description);
+        Goods goods=goodsService.searchGoods(goodAttributes);
+        goods.setStock(oldStock+stock);
+        goods.setDescription(description);
+        goods.setOriginPrice(originPrice);
         if(goodsService.updateGoods(goods)){
-            for (int i=oldStock;i<stock;++i){
+            for (int i=0;i<stock;++i){
                 goodsService.insertGood(goodAttributes);
             }
             return CommonReturnType.create(null,"success");

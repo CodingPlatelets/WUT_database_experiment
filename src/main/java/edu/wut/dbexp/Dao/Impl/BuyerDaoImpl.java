@@ -28,12 +28,23 @@ public class BuyerDaoImpl implements BuyerDao {
 
     @Override
     public boolean buyGood(User user, Good good) {
-        String sql="insert into logger values(?,?)";
-        try{
-            return jdbcTemplate.update(sql,user.getId(),good.getGoodId())== 1;
+        if(user!=null) {
+            String sql = "insert into logger values(?,?)";
+            try{
+                return jdbcTemplate.update(sql,user.getId(),good.getGoodId())== 1;
+            }
+            catch (DataAccessException e){
+                return false;
+            }
         }
-        catch (DataAccessException e){
-            return false;
+        else {
+            String sql = "insert into logger values(?,?)";
+            try {
+                return jdbcTemplate.update(sql, null, good.getGoodId()) == 1;
+            } catch (DataAccessException e) {
+                return false;
+            }
+
         }
     }
 
@@ -49,4 +60,5 @@ public class BuyerDaoImpl implements BuyerDao {
             return false;
         }
     }
+
 }

@@ -31,11 +31,12 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean addGoods(Goods goods) {
-        String sql = "insert into goods (goodAttributes, description) values(?,?)";
+        String sql = "insert into goods (goodAttributes, description, originPrice) values(?,?,?)";
         try {
             return jdbcTemplate.update(sql,
                     goods.getGoodAttributes(),
-                    goods.getDescription()) == 1;
+                    goods.getDescription(),
+                    goods.getOriginPrice()) == 1;
         } catch (DataAccessException e) {
             return false;
         }
@@ -43,11 +44,12 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public boolean updateGoods(Goods goods) {
-        String sql = "update goods set description = ? , originPrice = ? where goodAttributes = ?";
+        String sql = "update goods set description = ? , originPrice = ? , stock = ? where goodAttributes = ?";
         try {
             return jdbcTemplate.update(sql,
                     goods.getDescription(),
                     goods.getOriginPrice(),
+                    goods.getStock(),
                     goods.getGoodAttributes()
             ) > 0;
         } catch (DataAccessException e) {

@@ -78,7 +78,7 @@ INSERT INTO `goods` VALUES (10, NULL, 4,333);*/
 -- ----------------------------
 DROP TABLE IF EXISTS `logger`;
 CREATE TABLE `logger`  (
-  `userId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `userId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci ,
   `goodId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   INDEX `userId`(`userId`) USING BTREE,
   INDEX `goodId`(`goodId`) USING BTREE,

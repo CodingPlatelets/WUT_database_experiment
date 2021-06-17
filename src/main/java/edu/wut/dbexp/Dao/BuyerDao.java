@@ -8,4 +8,5 @@ public interface BuyerDao {
     boolean buyGood(User user, Good good);
 
     boolean deleteLogger(String goodId);
+
 }

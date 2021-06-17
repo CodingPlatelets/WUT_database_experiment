@@ -81,16 +81,13 @@
                             "goodAttributes": goodAttributes
                         }, //请求参数
 
-                        async: false,
-                        dataType: "json",
-
                         //响应成功后的回调函数
                         success: function (data) {
                             if (data.msg == "success") {
 
                                 var data = jQuery.parseJSON(data.data);
-                                originPrice=data.originPrice;
-                                description=data.originPrice;
+                                originPrice=data[0].originPrice;
+                                description=data[0].description;
                                 // <th>商品ID</th>
                                 // <th>商品描述</th>
                                 // <th>数量</th>
@@ -101,7 +98,7 @@
 
                                 //判断是否可以退货
                             } else {
-                                alert(data.data);
+                                alert(data.msg);
                             }
                         },
 

@@ -74,8 +74,8 @@
                                     success: function (datas) {
                                         if (datas.msg == "success") {
                                             var data=jQuery.parseJSON(datas.data);
-                                            description=data.description;
-                                            originPrice=data.originPrice;
+                                            description=data[0].description;
+                                            originPrice=data[0].originPrice;
                                             var str = "<tr><td>" + goodId +
                                                 "</td><td>" + goodAttributes +
                                                 "</td><td>" + description +
@@ -122,6 +122,7 @@
                     var tr = $("table tr").eq(i);
                     var td = tr.children();
                     var goodId = td.eq(0).html();
+                    var price = td.eq(4).html();
                     var flag = false;
 
                     $.ajax({
@@ -129,6 +130,7 @@
                         type: "POST", //请求方式
                         data: {
                             "goodId": goodId,
+                            "price" : price
                         }, //请求参数
 
                         async: false,
@@ -155,7 +157,7 @@
                     //显示金额
                     var total = $("#total").html();
                     alert("应付：" + total + "\n" + "实付：" + total);
-                    window.location.href = "main.html";
+                    window.location.href = "sale.html";
                 }
 
 
@@ -217,7 +219,7 @@
                     if (flag == true) {
                         //显示金额
                         alert("应付：" + $("#total").html() + "\n" + "实付：" + total);
-                        window.location.href = "main.html";
+                        window.location.href = "sale.html";
                     }
                 }
             });
