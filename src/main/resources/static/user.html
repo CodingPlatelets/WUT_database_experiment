@@ -64,12 +64,12 @@
                                 $("#goodTable").append(str);
                             }
                         } else {
-                            alert(datas.msg);
+                            alert('不存在该用户！');
                         }
                     },
 
                     error: function () {
-                        alert('不存在该用户！');
+                        alert('响应失败！');
                     },
                 })
 
@@ -102,12 +102,12 @@
                         tr.remove();
                         return;
                     } else {
-                        alert(datas.data);
+                        alert('用户信息删除失败！');
                     }
                 },
 
                 error: function () {
-                    alert('用户信息删除失败！');
+                    alert('响应失败！');
                 },
             })
         }

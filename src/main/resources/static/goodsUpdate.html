@@ -58,12 +58,12 @@
                             window.location.href = 'goods.html';
                             
                         } else {
-                            alert(datas.msg);
+                            alert('商品信息更新失败！');
                         }
                     },
 
                     error: function () {
-                        alert('商品信息更新失败！');
+                        alert('响应失败！');
                     },
 
                 });

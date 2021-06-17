@@ -27,11 +27,6 @@
                 var description = $('#description').val();
                 var originPrice = $("#originPrice").val();
                 var stock = $("#stock").val();
-                // alert(goodAttributes);
-                // alert(description);
-                // alert(originPrice);
-                // alert(stock);
-                // return;
                 if(goodAttributes == "" || originPrice == "" || stock =="") {
                     alert("请填写完整信息！");
                     return;
@@ -55,7 +50,7 @@
 
                         //表示如果请求响应出现错误，会执行的回调函数
                         error:function () {
-                            alert("商品信息添加失败！");
+                            alert("响应失败");
                         },
                     })
                 } 

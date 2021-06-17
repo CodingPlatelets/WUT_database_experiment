@@ -88,12 +88,12 @@
                                             var total = Number($("#total").html()) + originPrice;
                                             $("#total").html(total);
                                         } else {
-                                            alert(datas.msg);
+                                            alert("不存在此商品，请重新输入!");
                                         }
                                     },
                                     //表示如果请求响应出现错误，会执行的回调函数
                                     error: function () {
-                                        alert("不存在此商品，请重新输入！");
+                                        alert("响应错误！");
                                         return;
                                     },
                                 });
@@ -104,59 +104,12 @@
                         },
                         //表示如果请求响应出现错误，会执行的回调函数
                         error: function () {
-                            alert("不存在此商品，请重新输入！");
+                            alert("响应错误！");
                             return;
                         },
                     });
 
-                    // $.ajax({
-                    //     url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
-                    //     type: "POST", //请求方式
-                    //     data: {
-                    //         "goodAttributes": goodAttributes,
-                    //     }, //请求参数
-                    //
-                    //     async: false,
-                    //     dataType: "json",
-                    //
-                    //     //响应成功后的回调函数
-                    //     success: function (datas) {
-                    //         if (datas.msg == "success") {
-                    //             var data=jQuery.parseJSON(datas.data);
-                    //             description=data.description;
-                    //             originPrice=data.originPrice;
-                    //             var str = "<tr><td>" + goodId +
-                    //                 "</td><td>" + goodAttributes +
-                    //                 "</td><td>" + description +
-                    //                 "</td><td>" + "1" +
-                    //                 "</td><td>" + originPrice +
-                    //                 "</td><td>" +
-                    //                 "<a class='btn btn-default btn-sm' onclick='Delete(this);'>删除</a>" +
-                    //                 "</td></td>";
-                    //             $("#goodTable").append(str);
-                    //             var total = Number($("#total").html()) + originPrice;
-                    //             $("#total").html(total);
-                    //         } else {
-                    //             alert(datas.msg);
-                    //         }
-                    //     },
-                    //     //表示如果请求响应出现错误，会执行的回调函数
-                    //     error: function () {
-                    //         alert("不存在此商品，请重新输入！");
-                    //         return;
-                    //     },
-                    // });
-                    /*var str = "<tr><td>" + goodId +
-                        "</td><td>" + goodAttributes +
-                        "</td><td>" + description +
-                        "</td><td>" + "1" +
-                        "</td><td>" + originPrice +
-                        "</td><td>" +
-                        "<a class='btn btn-default btn-sm' onclick='Delete(this);'>删除</a>" +
-                        "</td></td>";
-                    $("#goodTable").append(str);
-                    var total = Number($("#total").html()) + originPrice;
-                    $("#total").html(total);*/
+
                 }
             });
 
@@ -246,8 +199,10 @@
                                     var data = jQuery.parseJSON(data.data);
                                     total += data;
                                 } else {
-                                    alert(data.msg);
-                                    return ;
+                                    window.sessionStorage.setItem('phoneNumber', phoneNumber);
+                                    window.sessionStorage.setItem('str', window.location.href);
+                                    alert('余额不足，请充值！');
+                                    window.location.href = 'userUpdate.html';
                                 }
                             },
 
