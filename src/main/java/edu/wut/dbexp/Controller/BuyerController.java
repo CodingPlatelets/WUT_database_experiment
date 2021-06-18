@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class BuyerController {
             return  CommonReturnType.create(EmBusinessError.LACK_INFO,"balance is not enough");
         }
         double expense = price*Math.max(1-user.getVipStatus()*1.0/10000,0.8);
+        BigDecimal b=new BigDecimal(expense);
+        expense=b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
         user.setBalance(user.getBalance()-expense);
         user.setVipStatus(user.getVipStatus()+(int)expense);
         userService.updateUser(user);

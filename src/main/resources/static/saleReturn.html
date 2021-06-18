@@ -61,7 +61,57 @@
                                 // <th>售价</th>
                                 // <th>是否可退</th>
                                 // <th>选择</th>
+                                $.ajax({
+                                    url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
+                                    type: "POST", //请求方式
+                                    data: {
+                                        "goodAttributes": goodAttributes
+                                    }, //请求参数
 
+                                    //响应成功后的回调函数
+                                    success: function (data) {
+                                        if (data.msg == "success") {
+
+                                            var data = jQuery.parseJSON(data.data);
+                                            originPrice=data[0].originPrice;
+                                            description=data[0].description;
+                                            // <th>商品ID</th>
+                                            // <th>商品描述</th>
+                                            // <th>数量</th>
+                                            // <th>原价</th>
+                                            // <th>售价</th>
+                                            // <th>是否可退</th>
+                                            // <th>选择</th>
+
+                                            //判断是否可以退货
+                                            var st;
+                                            if (canRefund == true) {
+                                                st = "<input type='checkbox'>";
+                                            } else {
+                                                st = "<input type='checkbox' disabled='disabled'>"
+                                            }
+
+                                            var str = "<tr><td>" + goodId +
+                                                "</td><td>" + description +
+                                                "</td><td>" + "1" +
+                                                "</td><td>" + originPrice +
+                                                "</td><td>" + salePrice +
+                                                "</td><td>" + canRefund +
+                                                "</td><td>" + st +
+                                                "</td></tr>";
+
+                                            $("#goodTable").append(str);
+                                        } else {
+                                            alert(data.msg);
+                                        }
+                                    },
+
+                                    //表示如果请求响应出现错误，会执行的回调函数
+                                    error: function () {
+                                        alert("不存在此商品，请重新输入！");
+                                        return;
+                                    },
+                                })
                                 //判断是否可以退货
                             } else {
                                 alert(data.data);
@@ -74,7 +124,7 @@
                             return;
                         },
                     })
-                    $.ajax({
+                    /*$.ajax({
                         url: "http://localhost:8091/dbexp/goods/query/goods", // 请求路径
                         type: "POST", //请求方式
                         data: {
@@ -107,8 +157,8 @@
                             alert("不存在此商品，请重新输入！");
                             return;
                         },
-                    })
-                    var st;
+                    })*/
+                    /*var st;
                     if (canRefund == true) {
                         st = "<input type='checkbox'>";
                     } else {
@@ -124,7 +174,7 @@
                         "</td><td>" + st +
                         "</td></tr>";
 
-                    $("#goodTable").append(str);
+                    $("#goodTable").append(str);*/
                 }
 
             });

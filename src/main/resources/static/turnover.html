@@ -42,9 +42,6 @@
                         "date": moveIn
                     }, //请求参数
 
-                    async: false,
-                    dataType: "json",
-
                     //响应成功后的回调函数
                     success: function (data) {
                         var data = jQuery.parseJSON(data.data);
@@ -77,14 +74,22 @@
                                     "goodAttributes": data[i].goodAttributes
                                 }, //请求参数
 
-                                async: false,
-                                dataType: "json",
-                                success: function(data){
-                                    var data=jQuery.parseJSON(data.data);
-                                    originPrice=data.originPrice;
+                                success: function(datas){
+                                    var datas=jQuery.parseJSON(datas.data);
+                                    alert(datas);
+                                    var originPrice=datas[0].originPrice;
+                                    var str = "<tr><td>" + data[i].goodId +
+                                        "</td><td>" + data[i].goodAttributes +
+                                        "</td><td>" + "1" +
+                                        "</td><td>" +  originPrice+
+                                        "</td><td>" + data[i].salePrice +
+                                        "</td></tr>";
+
+                                    $('#goodTable').append(str);
+                                    total += data[i].salePrice;
                                 }
                             })
-                            var str = "<tr><td>" + data[i].goodId +
+                           /* var str = "<tr><td>" + data[i].goodId +
                                 "</td><td>" + data[i].goodAttributes +
                                 "</td><td>" + "1" +
                                 "</td><td>" +  originPrice+
@@ -92,7 +97,7 @@
                                 "</td></tr>";
 
                             $('#goodTable').append(str);
-                            total += data[i].salePrice;
+                            total += data[i].salePrice;*/
                         }
 
                         $('#total').html('营业额:' + total);
@@ -121,9 +126,6 @@
                         data: {
                             "date": moveIn
                         }, //请求参数
-
-                        async: false,
-                        dataType: "json",
 
                         //响应成功后的回调函数
                         success: function (data) {
@@ -157,14 +159,21 @@
                                         "goodAttributes": data[i].goodAttributes
                                     }, //请求参数
 
-                                    async: false,
-                                    dataType: "json",
-                                    success: function(data){
-                                        var data=jQuery.parseJSON(data.data);
-                                        originPrice=data.originPrice;
+                                    success: function(datas){
+                                        var datas=jQuery.parseJSON(datas.data);
+                                        originPrice=datas[0].originPrice;
+                                        var str = "<tr><td>" + data[i].goodId +
+                                            "</td><td>" + data[i].goodAttributes +
+                                            "</td><td>" + "1" +
+                                            "</td><td>" +  originPrice+
+                                            "</td><td>" + data[i].salePrice +
+                                            "</td></tr>";
+
+                                        $('#goodTable').append(str);
+                                        total += data[i].salePrice;
                                     }
                                 })
-                                var str = "<tr><td>" + data[i].goodId +
+                                /*var str = "<tr><td>" + data[i].goodId +
                                     "</td><td>" + data[i].goodAttributes +
                                     "</td><td>" + "1" +
                                     "</td><td>" +  originPrice+
@@ -172,7 +181,7 @@
                                     "</td></tr>";
 
                                 $('#goodTable').append(str);
-                                total += data[i].salePrice;
+                                total += data[i].salePrice;*/
                             }
 
                             $('#total').html('营业额:' + total);

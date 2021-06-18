@@ -45,6 +45,7 @@ public class GoodsController {
         else{
             good.setCanRefund(false);
         }
+        goodsService.updateGood(good);
         return CommonReturnType.create(JSON.toJSONString(good), "success");
     }
 
